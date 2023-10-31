@@ -53,8 +53,8 @@ router.get('/',async(req,res,next)=>{
     const body = {
         Spots:spots.map(ele => {
             const avgRating = ele.Reviews.length > 0 ? (ele.Reviews.reduce((acc,review) => acc + review.stars, 0) / ele.Reviews.length).toFixed(2) : null;//???
-            console.log(avgRating)
-            console.log(ele.Reviews.stars)
+            // console.log(avgRating)
+            // console.log(ele.Reviews.stars)
             const { url: previewImageUrl } = (ele.SpotImages[0] || {});
             return{
                 id:ele.id,
@@ -169,6 +169,52 @@ router.post('/:spotId/images',requireAuth,checkSpot,properAuthSpot,async(req,res
         preview:spotImage.preview
     })
 
+});
+
+//get-spot-of-current-user
+router.get('/current', requireAuth, async(req,res,next)=>{
+    const spots = await Spot.findAll({
+        include:[
+            {
+                model:SpotImage,
+                attributes:['url'],
+                where:{preview:true},
+                require:false
+            },
+            {
+                model:Review,
+                attributes:['stars']
+            }
+        ],
+        where:{ownerId:req.user.id}
+    });
+    const body = {
+        Spots:spots.map(ele => {
+            console.log(ele)
+            const avgRating = ele.Reviews.length > 0 ? (ele.Reviews.reduce((acc,review) => acc + review.stars, 0) / ele.Reviews.length).toFixed(2) : null;//???
+            console.log(avgRating)
+            // console.log(ele.Reviews.stars)
+            const { url: previewImageUrl } = (ele.SpotImages[0] || {});
+            return{
+                id:ele.id,
+                ownerId:ele.ownerId,
+                    address:ele.address,
+                    city:ele.city,
+                    state:ele.state,
+                    country:ele.country,
+                    lat:ele.lat,
+                    lng:ele.lng,
+                    name:ele.name,
+                    description:ele.description,
+                    price:ele.price,
+                    createdAt:ele.createdAt,
+                    updatedAt:ele.updatedAt,
+                    avgRating:avgRating,
+                    previewImage:previewImageUrl
+            }
+        })
+    }
+    return res.json(body);
 
 })
 module.exports = router;
