@@ -53,5 +53,78 @@ console.log('----/>',spots[0].Reviews[0])
     return res.json(body);
 })
 
+//create a spot
+const validateCreateSpot = [
+    check('address')
+      .notEmpty()
+      .withMessage('Street address is required'),
+    check('city')
+      .notEmpty()
+      .withMessage('City is required'),
+    check('state')
+      .notEmpty()
+      .withMessage('State is required'),
+    check('country')
+      .notEmpty()
+      .withMessage('Country is required'),
+    check('lat')
+      .isNumeric()
+      .withMessage('Latitude is not valid')
+      .custom(value=>{
+        if(value < -90 || value >90){
+            throw new Error('erro lat')
+        }
+        return true
+    }),
+    check('lng')
+      .isNumeric()
+      .withMessage('Longitude is not valid')
+      .custom(value=>{
+        if(value < -180 || value >180){
+            throw new Error('erro lng')
+        }
+        return true
+      }),
+    check('name')
+      .isLength({ max: 50 })
+      .withMessage('Name must be less than 50 characters'),
+    check('description')
+      .notEmpty()
+      .withMessage('Description is required'),
+    check('price')
+    //   .notEmpty()
+      .isNumeric()
+      .withMessage('Price per day is required')
+      .custom(value=>{
+        if(value<=0){
+            throw new Error('Pirce error')
+        }
+        return true
+      }),
+handleValidationErrors
+  ];
+router.post('/',requireAuth, validateCreateSpot, async(req,res,next)=>{
+
+    const {address, city, state, country, lat, lng, name, description, price} = req.body;
+    const newSpot = await Spot.create({
+        ownerId:req.user.id, address, city, state, country, lat, lng, name, description,price
+    })
+    return res.status(201).json({
+        id:newSpot.id,
+        ownerId:newSpot.ownerId,
+        address:newSpot.address,
+        city:newSpot.city,
+        state:newSpot.state,
+        country:newSpot.country,
+        lat:newSpot.lat,
+        lng:newSpot.lng,
+        name:newSpot.name,
+        description:newSpot.description,
+        price:newSpot.price,
+        createdAt:newSpot.createdAt,
+        updatedAt:newSpot.updatedAt
+      });
+
+})
 
 module.exports = router;
