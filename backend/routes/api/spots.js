@@ -8,6 +8,30 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const router = express.Router();
 
+async function checkSpot(req, res, next){
+    const spotId = req.params.spotId;
+    const spot = await Spot.findByPk(spotId);
+
+    if(spot){
+        req.spot = spot;
+        return next()
+    }else{
+        res.status(404).json({
+            message:"Spot couldn't be found"
+        })
+    }
+};
+
+async function properAuthSpot(req,res,next){
+    console.log('User ID:', req.user.id);
+    console.log('Spot Owner ID:', req.spot.ownerId);
+    if(req.user.id === req.spot.ownerId){
+        return next();
+    }
+    res.status(403).json({
+        message:'Forbidden'
+      })
+}
 //get all spots
 router.get('/',async(req,res,next)=>{
     const spots = await Spot.findAll({
@@ -24,13 +48,14 @@ router.get('/',async(req,res,next)=>{
             }
         ]
     });
-console.log('spots-->',spots),
-console.log('----/>',spots[0].Reviews[0])
+// console.log('spots-->',spots),
+// console.log('----/>',spots[0].Reviews[0])
     const body = {
         Spots:spots.map(ele => {
             const avgRating = ele.Reviews.length > 0 ? (ele.Reviews.reduce((acc,review) => acc + review.stars, 0) / ele.Reviews.length).toFixed(2) : null;//???
             console.log(avgRating)
             console.log(ele.Reviews.stars)
+            const { url: previewImageUrl } = (ele.SpotImages[0] || {});
             return{
                 id:ele.id,
                 ownerId:ele.ownerId,
@@ -46,14 +71,14 @@ console.log('----/>',spots[0].Reviews[0])
                     createdAt:ele.createdAt,
                     updatedAt:ele.updatedAt,
                     avgRating:avgRating,
-                    previewImage:ele.SpotImages[0]
+                    previewImage:previewImageUrl
             }
         })
     }
     return res.json(body);
 })
 
-//create a spot
+//create_a_spot
 const validateCreateSpot = [
     check('address')
       .notEmpty()
@@ -127,4 +152,23 @@ router.post('/',requireAuth, validateCreateSpot, async(req,res,next)=>{
 
 })
 
+//create_an_image_to_a_spot
+router.post('/:spotId/images',requireAuth,checkSpot,properAuthSpot,async(req,res,next)=>{
+    const {spotId} = req.params;
+    const {url, preview} = req.body;
+
+
+    const spotImage = await SpotImage.create({
+        url:url,
+        preview:preview,
+        spotId:spotId
+    });
+    res.json({
+        id:spotImage.id,
+        url:spotImage.url,
+        preview:spotImage.preview
+    })
+
+
+})
 module.exports = router;
