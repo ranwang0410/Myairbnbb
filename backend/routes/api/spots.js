@@ -343,4 +343,44 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
         });
 
     })
+
+    //get-reviews-by-spot-id => get -> /api/spots/:spotId/reviews
+    router.get('/:spotId/reviews', checkSpot,async(req, res, next) => {
+        const spotId = req.params.spotId;
+        const reviews = await Review.findAll({
+            where:{spotId:spotId},
+            include:[
+                {
+                    model:User,
+                    attributes:['id','firstName','lastName']
+                },
+                {
+                    model:ReviewImage,
+                    attributes:['id','url']
+                }
+            ]
+        })
+
+        const body = {
+            Reviews:reviews.map(ele => {
+                return{
+                    id:ele.id,
+                    userId:ele.userId,
+                    spotId:parseInt(req.params.spotId, 10),
+                    review: ele.review,
+                        stars: ele.stars,
+                        createdAt: ele.createdAt,
+                        updatedAt: ele.updatedAt,
+                        User:{
+                            id: ele.User.id,
+                            firstName: ele.User.firstName,
+                            lastName: ele.User.lastName
+                        },
+                        ReviewImages: ele.ReviewImages
+
+                }
+            })
+        }
+        return res.json(body);
+    })
 module.exports = router;
