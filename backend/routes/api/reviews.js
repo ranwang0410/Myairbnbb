@@ -31,6 +31,17 @@ async function properAuthReview(req,res,next){
         message:'Forbidden'
       })
 }
+
+const validateReview = [
+    check('review')
+    .notEmpty()
+    .withMessage('Review text is required'),
+    check('stars')
+    .isInt({min:1,max:5})
+    .withMessage('Stars must be an integer from 1 to 5'),
+    handleValidationErrors
+]
+
 //create-an-image-for-a-review => post -> /api/reviews/:reviewId/images
 router.post('/:reviewId/images', requireAuth, checkReview,properAuthReview,  async(req,res,next)=>{
 
@@ -128,5 +139,29 @@ router.get('/current', requireAuth, async(req,res,next) => {
     return res.json(body);
 })
 
+//edit-a-review => put -> /api/reviews/:reviewId
+router.put('/:reviewId', requireAuth,validateReview, checkReview, properAuthReview, async(req, res, next)=>{
+    const reviewId = parseInt(req.params.reviewId,10)
+    const {review, stars} = req.body;
+    const editReview = await Review.findByPk(reviewId);
+
+    editReview.review = review;
+    editReview.stars = stars;
+
+    await editReview.save();
+
+    return res.status(200).json({
+        id:editReview.id,
+        userId:editReview.userId,
+        spotId:editReview.spotId,
+        review:editReview.review,
+        stars:editReview.stars,
+        createdAt:editReview.createdAt,
+        updatedAt:editReview.updatedAt
+    })
+
+
+
+})
 
 module.exports = router;
