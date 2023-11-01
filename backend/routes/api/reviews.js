@@ -109,27 +109,25 @@ router.get('/current', requireAuth, async(req,res,next) => {
                 userId:ele.userId,
                 spotId:ele.Spot.id,
                 review: ele.review,
-                    stars: ele.stars,
-                    createdAt: ele.createdAt,
-                    updatedAt: ele.updatedAt,
-                    User:{
-                        id: ele.User.id,
-                        firstName: ele.User.firstName,
-                        lastName: ele.User.lastName
+                stars: ele.stars,
+                createdAt: ele.createdAt,
+                updatedAt: ele.updatedAt,
+                User:{
+                    id: ele.User.id,
+                    firstName: ele.User.firstName,
+                    lastName: ele.User.lastName
                     },
-                    Spot:{
-                        id:ele.Spot.id,
-                        ownerId: ele.Spot.ownerId,
-                        address:ele.Spot.address,
-                        city:ele.Spot.city,
-                        state:ele.Spot.state,
-                        country:ele.Spot.country,
-                        lat:ele.Spot.lat,
-                        lng:ele.Spot.lng,
-                        name:ele.Spot.name,
-                        description:ele.Spot.description,
-                        price:ele.Spot.price,
-                        previewImage:previewImageUrl
+                Spot:{
+                    id:ele.Spot.id,
+                    ownerId: ele.Spot.ownerId,
+                    address:ele.Spot.address,
+                    city:ele.Spot.city,                        state:ele.Spot.state,
+                    country:ele.Spot.country,
+                    lat:ele.Spot.lat,
+                    lng:ele.Spot.lng,
+                    name:ele.Spot.name,
+                    description:ele.Spot.description,                        price:ele.Spot.price,
+                    previewImage:previewImageUrl
                     },
                     ReviewImages: ele.ReviewImages
 

@@ -7,6 +7,47 @@ const { User,Spot,Booking,Review, ReviewImage, SpotImage } = require('../../db/m
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const router = express.Router();
+
+async function checkBooking(req, res, next){
+    const bookingId = req.params.bookingId;
+    const booking = await Booking.findByPk(bookingId);
+
+    if(booking){
+        req.booking = booking;
+        return next()
+    }else{
+        res.status(404).json({
+            message:"Booking couldn't be found"
+        })
+    }
+};
+
+async function properAuthBooking(req,res,next){
+
+    if(req.user.id === req.booking.userId){
+        return next();
+    }
+    res.status(403).json({
+        message:'Forbidden'
+      })
+}
+
+const validatebooking =[
+    check('startDate')
+    .exists({checkFalsy:true})
+    .withMessage('Error startDate'),
+    check('endDate')
+    .exists({checkFalsy:true})
+    .withMessage('Error endDate')
+    .custom((value, { req }) => {
+        if (new Date(value) <= new Date(req.body.startDate)) {
+          throw new Error('endDate cannot come before startDate');
+        }
+        return true;
+      }),
+handleValidationErrors
+];
+
 //get-all-current-users-bookings => get -> /api/bookings/current
 router.get('/current',requireAuth, async(req, res, next) => {
     const userId = req.user.id;
@@ -63,5 +104,59 @@ router.get('/current',requireAuth, async(req, res, next) => {
     return res.json(body);
 })
 
-//
+//edit-a-booking => put -> /api/bookings/:bookingId
+router.put('/:bookingId', requireAuth, checkBooking, validatebooking,properAuthBooking, async(req,res,next) => {
+    const {startDate, endDate} = req.body;
+    const bookingId = parseInt(req.params.bookingId, 10);
+    const bookings= await Booking.findByPk(bookingId);
+
+    const conflictingBooking = await Booking.findOne({
+        where: {
+            id: { [Op.ne]: bookingId },
+            spotId: bookings.spotId,
+          [Op.or]: [
+            {
+              startDate: {
+                [Op.lte]: endDate,
+                [Op.gte]: startDate
+              }
+            },
+            {
+              endDate: {
+                [Op.lte]: endDate,
+                [Op.gte]: startDate
+              }
+            }
+          ]
+        }
+      });
+
+      if (conflictingBooking) {
+        return res.status(403).json({
+          message: "Sorry, this spot is already booked for the specified dates",
+          errors: {
+            startDate: "Start date conflicts with an existing booking",
+            endDate: "End date conflicts with an existing booking"
+          }
+        });
+      }
+      if (new Date(startDate) < new Date() || new Date(endDate) < new Date()) {
+        return res.status(403).json({
+            message: "Past bookings can't be modified"
+        });
+    }
+        bookings.startDate = startDate;
+        bookings.endDate = endDate;
+        await bookings.save();
+
+        return res.status(200).json({
+            id: bookings.id,
+            spotId: bookings.spotId,
+            userId: bookings.userId,
+            startDate: bookings.startDate,
+            endDate: bookings.endDate,
+            createdAt: bookings.createdAt,
+            updatedAt: bookings.updatedAt
+        });
+})
 module.exports = router;
