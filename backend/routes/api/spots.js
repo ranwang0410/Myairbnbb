@@ -300,4 +300,47 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
         });
 
     })
+
+    //create-a-review-for-a-spot => post -->/api/spots/:spotId/reviews
+    const validateReview = [
+        check('review')
+        .notEmpty()
+        .withMessage('Review text is required'),
+        check('stars')
+        .isInt({min:1,max:5})
+        .withMessage('Stars must be an integer from 1 to 5'),
+        handleValidationErrors
+    ]
+
+    router.post('/:spotId/reviews', requireAuth, checkSpot, validateReview,async(req, res, next) => {
+        const spotId = parseInt(req.params.spotId, 10);
+        const userId = req.user.id;
+        const { review, stars } = req.body;
+
+        const existingReview = await Review.findOne({
+            where: { userId, spotId }
+        });
+
+        if (existingReview) {
+            return res.status(500).json({ message: "User already has a review for this spot" });
+        }
+
+        const newReview = await Review.create({
+            userId,
+            spotId,
+            review,
+            stars
+        });
+
+        return res.status(201).json({
+            id: newReview.id,
+            userId: newReview.userId,
+            spotId: newReview.spotId,
+            review: newReview.review,
+            stars: newReview.stars,
+            createdAt: newReview.createdAt,
+            updatedAt: newReview.updatedAt
+        });
+
+    })
 module.exports = router;
