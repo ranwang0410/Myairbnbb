@@ -97,7 +97,7 @@ const validateCreateSpot = [
       .withMessage('Latitude is not valid')
       .custom(value=>{
         if(value < -90 || value >90){
-            throw new Error('erro lat')
+            throw new Error('Latitude is not valid')
         }
         return true
     }),
@@ -106,12 +106,13 @@ const validateCreateSpot = [
       .withMessage('Longitude is not valid')
       .custom(value=>{
         if(value < -180 || value >180){
-            throw new Error('erro lng')
+            throw new Error('Longitude is not valid')
         }
         return true
       }),
     check('name')
       .isLength({ max: 50 })
+      .notEmpty()
       .withMessage('Name must be less than 50 characters'),
     check('description')
       .notEmpty()
@@ -122,7 +123,7 @@ const validateCreateSpot = [
       .withMessage('Price per day is required')
       .custom(value=>{
         if(value<=0){
-            throw new Error('Pirce error')
+            throw new Error('Price per day is required')
         }
         return true
       }),
@@ -261,6 +262,42 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
         };
 
         return res.status(200).json(response);
+
+    })
+
+    //edit-a-spot
+    router.put('/:spotId', requireAuth, validateCreateSpot, checkSpot, properAuthSpot, async(req,res,next)=>{
+        const {address, city, state, country, lat, lng, name, description, price} = req.body;
+        const spotId = req.params.spotId;
+
+        const spot = await Spot.findByPk(spotId);
+        spot.address = address;
+        spot.city = city;
+        spot.state = state;
+        spot.country = country;
+        spot.lat = lat;
+        spot.lng = lng;
+        spot.name = name;
+        spot.description = description;
+        spot.price = price;
+
+        await spot.save();
+
+        return res.status(200).json({
+            id: spot.id,
+            ownerId: spot.ownerId,
+            address: spot.address,
+            city: spot.city,
+            state: spot.state,
+            country: spot.country,
+            lat: spot.lat,
+            lng: spot.lng,
+            name: spot.name,
+            description: spot.description,
+            price: spot.price,
+            createdAt: spot.createdAt,
+            updatedAt: spot.updatedAt
+        });
 
     })
 module.exports = router;
