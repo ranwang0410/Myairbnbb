@@ -190,10 +190,8 @@ router.get('/current', requireAuth, async(req,res,next)=>{
     });
     const body = {
         Spots:spots.map(ele => {
-            console.log(ele)
-            const avgRating = ele.Reviews.length > 0 ? (ele.Reviews.reduce((acc,review) => acc + review.stars, 0) / ele.Reviews.length).toFixed(2) : null;//???
-            console.log(avgRating)
-            // console.log(ele.Reviews.stars)
+
+            const avgRating = ele.Reviews.length > 0 ? (ele.Reviews.reduce((acc,review) => acc + review.stars, 0) / ele.Reviews.length).toFixed(2) : null;
             const { url: previewImageUrl } = (ele.SpotImages[0] || {});
             return{
                 id:ele.id,
@@ -216,5 +214,53 @@ router.get('/current', requireAuth, async(req,res,next)=>{
     }
     return res.json(body);
 
-})
+});
+
+//get-details-of-a-spot-by-id -> /api/spots/:spotId
+router.get('/:spotId', checkSpot, async(req, res, next) => {
+    const spotId = req.params.spotId;
+    const spot = await Spot.findByPk(spotId, {
+            include: [
+                {
+                    model: SpotImage,
+                    attributes:['id', 'url', 'preview']
+                },
+                {
+                    model: User,
+                    as: 'Owner',
+                    attributes: ['id', 'firstName', 'lastName']
+                },
+                {
+                    model:Review
+                }
+            ]
+        });
+
+        const numReviews = spot.Reviews ? spot.Reviews.length : 0;
+        // console.log(spot)
+        const avgRating = numReviews > 0 ? (spot.Reviews.reduce((acc, review) => acc + review.stars, 0) / numReviews).toFixed(2) : null;
+
+        const response = {
+            id: spot.id,
+            ownerId: spot.ownerId,
+            address: spot.address,
+            city: spot.city,
+            state: spot.state,
+            country: spot.country,
+            lat: spot.lat,
+            lng: spot.lng,
+            name: spot.name,
+            description: spot.description,
+            price: spot.price,
+            createdAt: spot.createdAt,
+            updatedAt: spot.updatedAt,
+            numReviews: numReviews,
+            avgRating: avgRating,
+            SpotImages: spot.SpotImages,
+            Owner: spot.Owner
+        };
+
+        return res.status(200).json(response);
+
+    })
 module.exports = router;
