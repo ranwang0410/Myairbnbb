@@ -465,4 +465,53 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
 
     })
 
+    //get-all-bookings-for-a-spot-by-id => get => /api/spots/:spotId/bookings
+    router.get('/:spotId/bookings', requireAuth, checkSpot, async(req,res,next) =>{
+        const spotId = parseInt(req.params.spotId, 10);
+        const userId = req.user.id;
+        const spot = await Spot.findByPk(spotId);
+        if(spot.ownerId === userId){
+            const bookings = await Booking.findAll({
+                where :{spotId},
+                include:[{
+                    model:User,
+                    attributes:['id','firstName','lastName']
+                }]
+            })
+            return res.json({
+                Booking:bookings.map(booking=>({
+                    User:{
+                        id:booking.User.id,
+                        firstName:booking.User.firstName,
+                        lastName:booking.User.lastName
+                    },
+                    id:booking.id,
+                    spotId:booking.spotId,
+                    userId:booking.userId,
+                    startDate:booking.startDate,
+                    endDate:booking.endDate,
+                    createdAt:booking.createdAt,
+                    updatedAt:booking.updatedAt
+                }))
+            })
+        }else{
+            const bookings = await Booking.findAll({
+                where:{spotId},
+                attributes:['spotId','startDate','endDate']
+            })
+            return res.json({
+
+                Booking:bookings.map(booking=>({
+
+
+                    spotId:booking.spotId,
+
+                    startDate:booking.startDate,
+                    endDate:booking.endDate,
+
+                }))
+            })
+        }
+
+    })
 module.exports = router;
