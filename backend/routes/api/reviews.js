@@ -58,7 +58,75 @@ router.post('/:reviewId/images', requireAuth, checkReview,properAuthReview,  asy
         })
 })
 
+//get-reviews-of-current-user => get->/api/reviews/current
+router.get('/current', requireAuth, async(req,res,next) => {
+    const userId = req.user.id;
+    const reviews = await Review.findAll({
+        where:{
+            userId:userId
+        },
+        include:[
+            {
+                model:User,
+                attributes:['id','firstName', 'lastName']
+            },
+            {
+                model:Spot,
+                attributes:['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description','price'],
+                include:
+                    {
+                        model:SpotImage,
+                        attributes:['url'],
+                        where:{preview:true},
+                        require:false
+                    },
 
+            },
+            {
+                model:ReviewImage,
+                attributes:['id','url']
+            }
+        ]
+    })
+
+    const body = {
+        Reviews:reviews.map(ele => {
+
+            const { url: previewImageUrl } = (ele.Spot.SpotImages[0] || {});
+            return{
+                id:ele.id,
+                userId:ele.userId,
+                spotId:ele.Spot.id,
+                review: ele.review,
+                    stars: ele.stars,
+                    createdAt: ele.createdAt,
+                    updatedAt: ele.updatedAt,
+                    User:{
+                        id: ele.User.id,
+                        firstName: ele.User.firstName,
+                        lastName: ele.User.lastName
+                    },
+                    Spot:{
+                        id:ele.Spot.id,
+                        ownerId: ele.Spot.ownerId,
+                        address:ele.Spot.address,
+                        city:ele.Spot.city,
+                        state:ele.Spot.state,
+                        country:ele.Spot.country,
+                        lat:ele.Spot.lat,
+                        lng:ele.Spot.lng,
+                        name:ele.Spot.name,
+                        description:ele.Spot.description,
+                        price:ele.Spot.price,
+                        previewImage:previewImageUrl
+                    },
+                    ReviewImages: ele.ReviewImages
+
+            }
+        })
+    }
+    return res.json(body);
+})
 
 
 module.exports = router;
