@@ -32,9 +32,6 @@ async function properAuthReviewImage(req,res,next){
       })
 }
 
-
-
-
 // delete-a-review-image => delete -> /api/review-images/:imageId
 router.delete('/:imageId', requireAuth, checkReviewImage, properAuthReviewImage, async (req,res,next) => {
     await req.reviewImage.destroy();

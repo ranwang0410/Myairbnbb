@@ -23,8 +23,6 @@ async function checkSpot(req, res, next){
 };
 
 async function properAuthSpot(req,res,next){
-    // console.log('User ID:', req.user.id);
-    // console.log('Spot Owner ID:', req.spot.ownerId);
 
     if(req.user.id === req.spot.ownerId){
         return next();
@@ -513,5 +511,23 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
             })
         }
 
+    })
+
+    //delete-a-spot => delete -> /api/spots/:spotId
+    router.delete('/:spotId', requireAuth, checkSpot, properAuthSpot, async (req, res, next) => {
+
+        await Review.destroy({
+            where: { spotId: req.params.spotId }
+        });
+        await Booking.destroy({
+            where: { spotId: req.params.spotId}
+        });
+        await SpotImage.destroy({
+            where: { spotId: req.params.spotId}
+        })
+        await req.spot.destroy();
+        return res.status(200).json({
+            message: "Successfully deleted"
+        });
     })
 module.exports = router;
