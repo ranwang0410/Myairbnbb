@@ -43,31 +43,81 @@ async function checkAuthSpot_booking(req,res,next){
 }
 //get all spots
 router.get('/',async(req,res,next)=>{
-    const spots = await Spot.findAll({
-        include:[
+
+    let errors = {};
+    const page = parseInt(req.query.page, 10) || 1;
+    const size = parseInt(req.query.size, 10) || 20;
+
+    if(page < 1) errors.page = "Page must be greater than or equal to 1";
+    if(size < 1 || size > 20) errors.size = "Size must be greater than or equal to 1";
+
+    const params = ['maxLat', 'minLat', 'minLng', 'maxLng', 'minPrice', 'maxPrice'];
+    for(let i = 0; i < params.length; i++){
+        const param = params[i];
+        const value = parseFloat(req.query[param]);
+        switch (param) {
+            case 'maxLat':
+                if (value > 90 || value < -90) errors.maxLat = "Maximum latitude is invalid";
+                break;
+            case 'minLat':
+                if (value > 90 || value < -90) errors.minLat = "Minimum latitude is invalid";
+                break;
+            case 'minLng':
+                if (value > 180 || value < -180) errors.minLng = "Minimum longitude is invalid";
+                break;
+            case 'maxLng':
+                if (value > 180 || value < -180) errors.maxLng = "Maximum longitude is invalid";
+                break;
+            case 'minPrice':
+                if (value < 0) errors.minPrice = "Minimum price must be greater than or equal to 0";
+                break;
+            case 'maxPrice':
+                if (value < 0) errors.maxPrice = "Maximum price must be greater than or equal to 0";
+                break;
+        }
+
+    }
+    if(Object.keys(errors).length){
+        return res.status(400).json({
+            message:'Bad Request',
+            error:errors
+        })
+    }
+
+    let where = {};
+
+    if (req.query.minLat) where.lat = { [Op.gte]: parseFloat(req.query.minLat) };
+    if (req.query.maxLat) where.lat = { [Op.lte]: parseFloat(req.query.maxLat) };
+    if (req.query.minLng) where.lng = { [Op.gte]: parseFloat(req.query.minLng) };
+    if (req.query.maxLng) where.lng = { [Op.lte]: parseFloat(req.query.maxLng) };
+    if (req.query.minPrice) where.price = { [Op.gte]: parseFloat(req.query.minPrice) };
+    if (req.query.maxPrice) where.price = { [Op.lte]: parseFloat(req.query.maxPrice) };
+
+    const spot = await Spot.findAll({
+        where,
+        limit: size,
+        offset: (page - 1) * size,
+        include: [
             {
-                model:SpotImage,
-                attributes:['url'],
-                where:{preview:true},
-                require:false
+                model: SpotImage,
+                attributes: ['url'],
+                where: { preview: true },
+            required: false
             },
             {
-                model:Review,
-                attributes:['stars']
+            model: Review,
+            attributes: ['stars']
             }
-        ]
-    });
-// console.log('spots-->',spots),
-// console.log('----/>',spots[0].Reviews[0])
-    const body = {
-        Spots:spots.map(ele => {
-            const avgRating = ele.Reviews.length > 0 ? (ele.Reviews.reduce((acc,review) => acc + review.stars, 0) / ele.Reviews.length).toFixed(2) : null;//???
-            // console.log(avgRating)
-            // console.log(ele.Reviews.stars)
+        ],
+
+  });
+ const body =
+        spot.map(ele => {
+            const avgRating = ele.Reviews.length > 0 ? (ele.Reviews.reduce((acc,review) => acc + review.stars, 0) / ele.Reviews.length).toFixed(2) : null;
             const { url: previewImageUrl } = (ele.SpotImages[0] || {});
             return{
-                id:ele.id,
-                ownerId:ele.ownerId,
+                    id:ele.id,
+                    ownerId:ele.ownerId,
                     address:ele.address,
                     city:ele.city,
                     state:ele.state,
@@ -83,8 +133,14 @@ router.get('/',async(req,res,next)=>{
                     previewImage:previewImageUrl
             }
         })
-    }
-    return res.json(body);
+
+  return res.json({
+    Spots:body,
+    page,
+    size,
+
+  });
+
 })
 
 //create_a_spot
@@ -247,7 +303,6 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
         });
 
         const numReviews = spot.Reviews ? spot.Reviews.length : 0;
-        // console.log(spot)
         const avgRating = numReviews > 0 ? (spot.Reviews.reduce((acc, review) => acc + review.stars, 0) / numReviews).toFixed(2) : null;
 
         const response = {
@@ -530,4 +585,6 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
             message: "Successfully deleted"
         });
     })
+
+
 module.exports = router;
