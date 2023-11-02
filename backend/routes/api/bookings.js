@@ -32,6 +32,15 @@ async function properAuthBooking(req,res,next){
       })
 }
 
+async function deleteProperAuth(req, res, next){
+    const spot = await Spot.findByPk(req.booking.spotId);
+    if(req.user.id === req.booking.userId || req.user.id === spot.ownerId){
+        return next();
+    }
+    res.status(403).json({
+        message:'Forbidden'
+      })
+}
 const validatebooking =[
     check('startDate')
     .exists({checkFalsy:true})
@@ -158,5 +167,22 @@ router.put('/:bookingId', requireAuth, checkBooking, validatebooking,properAuthB
             createdAt: bookings.createdAt,
             updatedAt: bookings.updatedAt
         });
+})
+
+//delete-a-booking => delete -> /api/bookings/:bookingId
+function checkBookingNotStart(req, res, next) {
+    if (new Date(req.booking.startDate) < new Date()) {
+        return res.status(403).json({
+            message: "Bookings that have been started can't be deleted"
+        });
+    }
+    return next();
+}
+
+router.delete('/:bookingId', requireAuth, checkBooking, deleteProperAuth, checkBookingNotStart, async (req, res, next) => {
+    await req.booking.destroy();
+    res.status(200).json({
+        message:"Successfully deleted"
+    })
 })
 module.exports = router;
