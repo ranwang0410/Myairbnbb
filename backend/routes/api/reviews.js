@@ -83,7 +83,7 @@ router.get('/current', requireAuth, async(req,res,next) => {
             },
             {
                 model:Spot,
-                attributes:['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description','price'],
+                attributes:['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name','price'],
                 include:
                     {
                         model:SpotImage,
@@ -121,12 +121,13 @@ router.get('/current', requireAuth, async(req,res,next) => {
                     id:ele.Spot.id,
                     ownerId: ele.Spot.ownerId,
                     address:ele.Spot.address,
-                    city:ele.Spot.city,                        state:ele.Spot.state,
+                    city:ele.Spot.city,
+                    state:ele.Spot.state,
                     country:ele.Spot.country,
                     lat:ele.Spot.lat,
                     lng:ele.Spot.lng,
                     name:ele.Spot.name,
-                    description:ele.Spot.description,                        price:ele.Spot.price,
+                    price:ele.Spot.price,
                     previewImage:previewImageUrl
                     },
                     ReviewImages: ele.ReviewImages

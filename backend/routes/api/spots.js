@@ -176,8 +176,8 @@ const validateCreateSpot = [
         return true
       }),
     check('name')
+    .notEmpty()
       .isLength({ max: 50 })
-      .notEmpty()
       .withMessage('Name must be less than 50 characters'),
     check('description')
       .notEmpty()
@@ -532,7 +532,7 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
                 }]
             })
             return res.json({
-                Booking:bookings.map(booking=>({
+                Bookings:bookings.map(booking=>({
                     User:{
                         id:booking.User.id,
                         firstName:booking.User.firstName,
@@ -554,7 +554,7 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
             })
             return res.json({
 
-                Booking:bookings.map(booking=>({
+                Bookings:bookings.map(booking=>({
 
 
                     spotId:booking.spotId,
