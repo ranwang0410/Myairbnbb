@@ -157,9 +157,16 @@ router.put('/:reviewId', requireAuth,validateReview, checkReview, properAuthRevi
         createdAt:editReview.createdAt,
         updatedAt:editReview.updatedAt
     })
-
-
-
 })
 
+//delete-a-review => delete -> /api/reviews/:reviewId
+router.delete('/:reviewId', requireAuth, checkReview, properAuthReview, async (req, res, next) => {
+    await ReviewImage.destroy({
+        where: { reviewId: req.params.reviewId },
+    });
+    await req.review.destroy();
+    return res.status(200).json({
+        message: "Successfully deleted"
+    });
+})
 module.exports = router;
