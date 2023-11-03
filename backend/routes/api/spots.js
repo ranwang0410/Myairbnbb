@@ -471,20 +471,32 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
         const conflictingBooking = await Booking.findOne({
             where: {
               spotId,
-              [Op.or]: [
-                {
-                  startDate: {
-                    [Op.lte]: endDate,
-                    [Op.gte]: startDate
-                  }
-                },
-                {
-                  endDate: {
-                    [Op.lte]: endDate,
-                    [Op.gte]: startDate
-                  }
+                [Op.or]: [
+            {
+              startDate: {
+                [Op.lte]: endDate,
+                [Op.gt]: startDate
+              }
+            },
+            {
+                [Op.and]:[
+                    { startDate: { [Op.lte]: startDate } },
+                    {endDate: { [Op.gte]: endDate}}
+                ]
+            },
+            {
+              endDate: {
+                [Op.lt]: endDate,
+                [Op.gt]: startDate
+              }
+            },
+            {
+                endDate: {
+                  [Op.eq]: startDate
                 }
-              ]
+              }
+
+          ]
             }
           });
 

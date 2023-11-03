@@ -123,20 +123,47 @@ router.put('/:bookingId', requireAuth, checkBooking, validatebooking,properAuthB
         where: {
             id: { [Op.ne]: bookingId },
             spotId: bookings.spotId,
-          [Op.or]: [
-            {
-              startDate: {
-                [Op.lt]: endDate,
-                [Op.gt]: startDate
-              }
-            },
-            {
-              endDate: {
-                [Op.lt]: endDate,
-                [Op.gt]: startDate
-              }
-            }
-          ]
+            [Op.or]: [
+                {
+                  startDate: {
+                    [Op.lte]: endDate,
+                    [Op.gt]: startDate
+                  }
+                },
+                {
+                    [Op.and]:[
+                        { startDate: { [Op.lte]: startDate } },
+                        {endDate: { [Op.gte]: endDate}}
+                    ]
+                },
+                {
+                  endDate: {
+                    [Op.lte]: endDate,
+                    [Op.gte]: startDate
+                  }
+                },
+                {
+                    endDate: {
+                      [Op.lte]: startDate,
+
+                    }
+                  }
+
+              ]
+        //   [Op.or]: [
+        //     {
+        //       startDate: {
+        //         [Op.lt]: endDate,
+        //         [Op.gt]: startDate
+        //       }
+        //     },
+        //     {
+        //       endDate: {
+        //         [Op.lt]: endDate,
+        //         [Op.gt]: startDate
+        //       }
+        //     }
+        //   ]
         }
       });
 
