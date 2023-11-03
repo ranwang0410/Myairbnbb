@@ -1,5 +1,5 @@
 const express = require('express');
-const { Op } = require('sequelize');
+const { Sequelize,fn, col,Op ,query} = require('sequelize');
 const bcrypt = require('bcryptjs');
 
 const { setTokenCookie, restoreUser,requireAuth } = require('../../utils/auth');
@@ -466,41 +466,42 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
     ];
     //create-a-booking-based-on-a-spot-id => post -> /api/spots/:spotId/bookings
     router.post('/:spotId/bookings', requireAuth,checkSpot,checkAuthSpot_booking,  validatebooking, async(req,res,next) => {
-        const { startDate, endDate } = req.body;
+        const { startDate: bodyStartDate, endDate: bodyEndDate } = req.body;
         const spotId = req.spot.id;
-        const conflictingBooking = await Booking.findOne({
+
+        const bookings = await Booking.findAll({
             where: {
-              spotId,
+                spotId,
                 [Op.or]: [
-            {
-              startDate: {
-                [Op.lte]: endDate,
-                [Op.gt]: startDate
-              }
-            },
-            {
-                [Op.and]:[
-                    { startDate: { [Op.lte]: startDate } },
-                    {endDate: { [Op.gte]: endDate}}
+                    {
+                        startDate: {
+                            [Op.lte]: bodyEndDate
+                        }
+                    },
+                    {
+                        endDate: {
+                            [Op.gte]: bodyStartDate
+                        }
+                    }
                 ]
-            },
-            {
-              endDate: {
-                [Op.lt]: endDate,
-                [Op.gt]: startDate
-              }
-            },
-            {
-                endDate: {
-                  [Op.eq]: startDate
-                }
-              }
-
-          ]
             }
-          });
+        });
 
-          if (conflictingBooking) {
+        let conflictingBooking = false;
+        for (const booking of bookings) {
+            const dbStartDate = booking.startDate.toISOString().split('T')[0];
+            const dbEndDate = booking.endDate.toISOString().split('T')[0];
+
+            if ((dbStartDate >= bodyStartDate && dbStartDate <= bodyEndDate) ||
+                (dbEndDate >= bodyStartDate && dbEndDate <= bodyEndDate) ||
+                (bodyStartDate >= dbStartDate && bodyStartDate <= dbEndDate) ||
+                (bodyEndDate >= dbStartDate && bodyEndDate <= dbEndDate)) {
+                conflictingBooking = true;
+                break;
+            }
+        }
+
+        if (conflictingBooking) {
             return res.status(403).json({
               message: "Sorry, this spot is already booked for the specified dates",
               errors: {
@@ -513,8 +514,8 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
           const newBooking = await Booking.create({
             userId: req.user.id,
             spotId,
-            startDate,
-            endDate
+            startDate: bodyStartDate,
+            endDate: bodyEndDate
           });
 
           return res.status(200).json({

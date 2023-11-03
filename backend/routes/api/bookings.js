@@ -60,6 +60,7 @@ handleValidationErrors
 //get-all-current-users-bookings => get -> /api/bookings/current
 router.get('/current',requireAuth, async(req, res, next) => {
     const userId = req.user.id;
+    console.log(userId)
     const bookings = await Booking.findAll({
         where:userId,
         include:[
@@ -150,20 +151,6 @@ router.put('/:bookingId', requireAuth, checkBooking, validatebooking,properAuthB
                   }
 
               ]
-        //   [Op.or]: [
-        //     {
-        //       startDate: {
-        //         [Op.lt]: endDate,
-        //         [Op.gt]: startDate
-        //       }
-        //     },
-        //     {
-        //       endDate: {
-        //         [Op.lt]: endDate,
-        //         [Op.gt]: startDate
-        //       }
-        //     }
-        //   ]
         }
       });
 
