@@ -122,14 +122,14 @@ router.get('/',async(req,res,next)=>{
                     city:ele.city,
                     state:ele.state,
                     country:ele.country,
-                    lat:ele.lat,
-                    lng:ele.lng,
+                    lat:parseFloat(ele.lat),
+                    lng:parseFloat(ele.lng),
                     name:ele.name,
                     description:ele.description,
-                    price:ele.price,
+                    price:parseFloat(ele.price),
                     createdAt:ele.createdAt,
                     updatedAt:ele.updatedAt,
-                    avgRating:avgRating,
+                    avgRating:parseFloat(avgRating),
                     previewImage:previewImageUrl
             }
         })
@@ -207,11 +207,11 @@ router.post('/',requireAuth, validateCreateSpot, async(req,res,next)=>{
         city:newSpot.city,
         state:newSpot.state,
         country:newSpot.country,
-        lat:newSpot.lat,
-        lng:newSpot.lng,
+        lat:parseFloat(newSpot.lat),
+        lng:parseFloat(newSpot.lng),
         name:newSpot.name,
         description:newSpot.description,
-        price:newSpot.price,
+        price:parseFloat(newSpot.price),
         createdAt:newSpot.createdAt,
         updatedAt:newSpot.updatedAt
       });
