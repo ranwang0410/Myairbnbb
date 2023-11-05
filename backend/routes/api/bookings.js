@@ -60,9 +60,9 @@ handleValidationErrors
 //get-all-current-users-bookings => get -> /api/bookings/current
 router.get('/current',requireAuth, async(req, res, next) => {
     const userId = req.user.id;
-    console.log(userId)
+    // console.log(userId)
     const bookings = await Booking.findAll({
-        where:userId,
+        where:{userId: userId},
         include:[
             {
                 model:Spot,
