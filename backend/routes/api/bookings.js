@@ -1,8 +1,7 @@
 const express = require('express');
 const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
-
-const { setTokenCookie, restoreUser,requireAuth } = require('../../utils/auth');
+const { setTokenCookie, restoreUser,requireAuth,convertDateFormat,convertDateFormat2 } = require('../../utils/auth');
 const { User,Spot,Booking,Review, ReviewImage, SpotImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -23,7 +22,6 @@ async function checkBooking(req, res, next){
 };
 
 async function properAuthBooking(req,res,next){
-
     if(req.user.id === req.booking.userId){
         return next();
     }
@@ -54,13 +52,12 @@ const validatebooking =[
         }
         return true;
       }),
-handleValidationErrors
+    handleValidationErrors
 ];
 
 //get-all-current-users-bookings => get -> /api/bookings/current
 router.get('/current',requireAuth, async(req, res, next) => {
     const userId = req.user.id;
-    // console.log(userId)
     const bookings = await Booking.findAll({
         where:{userId: userId},
         include:[
@@ -75,18 +72,15 @@ router.get('/current',requireAuth, async(req, res, next) => {
                         required:false
                     }
                 ]
-
             }
         ]
     })
 
     const body = {
         Bookings:bookings.map(ele => {
-
             const { url: previewImageUrl } = (ele.Spot.SpotImages[0] || {});
             return{
                 id:ele.id,
-
                 spotId:ele.Spot.id,
                 Spot:{
                     id:ele.Spot.id,
@@ -98,16 +92,14 @@ router.get('/current',requireAuth, async(req, res, next) => {
                     lat:ele.Spot.lat,
                     lng:ele.Spot.lng,
                     name:ele.Spot.name,
-
                     price:ele.Spot.price,
                     previewImage:previewImageUrl
                 },
                 userId:ele.userId,
-                startDate:ele.startDate,
-                endDate:ele.endDate,
-                createdAt: ele.createdAt,
-                updatedAt: ele.updatedAt,
-
+                startDate:convertDateFormat2(ele.startDate),
+                endDate:convertDateFormat2(ele.endDate),
+                createdAt: convertDateFormat(ele.createdAt),
+                updatedAt: convertDateFormat(ele.updatedAt),
             }
         })
     }
@@ -149,7 +141,6 @@ router.put('/:bookingId', requireAuth, checkBooking, validatebooking,properAuthB
 
                     }
                   }
-
               ]
         }
       });
@@ -176,10 +167,10 @@ router.put('/:bookingId', requireAuth, checkBooking, validatebooking,properAuthB
             id: bookings.id,
             spotId: bookings.spotId,
             userId: bookings.userId,
-            startDate: bookings.startDate,
-            endDate: bookings.endDate,
-            createdAt: bookings.createdAt,
-            updatedAt: bookings.updatedAt
+            startDate: convertDateFormat2(bookings.startDate),
+            endDate: convertDateFormat2(bookings.endDate),
+            createdAt: convertDateFormat(bookings.createdAt),
+            updatedAt:convertDateFormat(bookings.updatedAt)
         });
 })
 

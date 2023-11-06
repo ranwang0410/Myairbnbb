@@ -1,8 +1,7 @@
 const express = require('express');
 const { Sequelize,fn, col,Op ,query} = require('sequelize');
 const bcrypt = require('bcryptjs');
-
-const { setTokenCookie, restoreUser,requireAuth } = require('../../utils/auth');
+const { setTokenCookie, restoreUser,requireAuth,convertDateFormat,convertDateFormat2 } = require('../../utils/auth');
 const { User,Spot,Booking,Review, ReviewImage, SpotImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -41,6 +40,7 @@ async function checkAuthSpot_booking(req,res,next){
         message:'Forbidden'
     })
 }
+
 //get all spots
 router.get('/',async(req,res,next)=>{
 
@@ -75,7 +75,6 @@ router.get('/',async(req,res,next)=>{
                 if (value < 0) errors.maxPrice = "Maximum price must be greater than or equal to 0";
                 break;
         }
-
     }
     if(Object.keys(errors).length){
         return res.status(400).json({
@@ -109,9 +108,8 @@ router.get('/',async(req,res,next)=>{
             attributes: ['stars']
             }
         ],
-
   });
- const body =
+    const body =
         spot.map(ele => {
             const avgRating = ele.Reviews.length > 0 ? (ele.Reviews.reduce((acc,review) => acc + review.stars, 0) / ele.Reviews.length).toFixed(2) : null;
             const { url: previewImageUrl } = (ele.SpotImages[0] || {});
@@ -127,20 +125,18 @@ router.get('/',async(req,res,next)=>{
                     name:ele.name,
                     description:ele.description,
                     price:parseFloat(ele.price),
-                    createdAt:ele.createdAt,
-                    updatedAt:ele.updatedAt,
+                    createdAt:convertDateFormat(ele.createdAt),
+                    updatedAt:convertDateFormat(ele.updatedAt),
                     avgRating:parseFloat(avgRating),
                     previewImage:previewImageUrl
             }
         })
 
-  return res.json({
-    Spots:body,
-    page,
-    size,
-
-  });
-
+    return res.json({
+        Spots:body,
+        page,
+        size,
+    });
 })
 
 //create_a_spot
@@ -183,7 +179,6 @@ const validateCreateSpot = [
       .notEmpty()
       .withMessage('Description is required'),
     check('price')
-    //   .notEmpty()
       .isNumeric()
       .withMessage('Price per day is required')
       .custom(value=>{
@@ -192,10 +187,10 @@ const validateCreateSpot = [
         }
         return true
       }),
-handleValidationErrors
-  ];
-router.post('/',requireAuth, validateCreateSpot, async(req,res,next)=>{
+    handleValidationErrors
+];
 
+router.post('/',requireAuth, validateCreateSpot, async(req,res,next)=>{
     const {address, city, state, country, lat, lng, name, description, price} = req.body;
     const newSpot = await Spot.create({
         ownerId:req.user.id, address, city, state, country, lat, lng, name, description,price
@@ -212,17 +207,15 @@ router.post('/',requireAuth, validateCreateSpot, async(req,res,next)=>{
         name:newSpot.name,
         description:newSpot.description,
         price:parseFloat(newSpot.price),
-        createdAt:newSpot.createdAt,
-        updatedAt:newSpot.updatedAt
+        createdAt:convertDateFormat(newSpot.createdAt),
+        updatedAt:convertDateFormat(newSpot.updatedAt)
       });
-
 })
 
 //create_an_image_to_a_spot
 router.post('/:spotId/images',requireAuth,checkSpot,properAuthSpot,async(req,res,next)=>{
     const {spotId} = req.params;
     const {url, preview} = req.body;
-
 
     const spotImage = await SpotImage.create({
         url:url,
@@ -234,7 +227,6 @@ router.post('/:spotId/images',requireAuth,checkSpot,properAuthSpot,async(req,res
         url:spotImage.url,
         preview:spotImage.preview
     })
-
 });
 
 //get-spot-of-current-user
@@ -256,7 +248,6 @@ router.get('/current', requireAuth, async(req,res,next)=>{
     });
     const body = {
         Spots:spots.map(ele => {
-
             const avgRating = ele.Reviews.length > 0 ? (ele.Reviews.reduce((acc,review) => acc + review.stars, 0) / ele.Reviews.length).toFixed(2) : null;
             const { url: previewImageUrl } = (ele.SpotImages[0] || {});
             return{
@@ -271,15 +262,14 @@ router.get('/current', requireAuth, async(req,res,next)=>{
                     name:ele.name,
                     description:ele.description,
                     price:ele.price,
-                    createdAt:ele.createdAt,
-                    updatedAt:ele.updatedAt,
+                    createdAt:convertDateFormat(ele.createdAt),
+                    updatedAt:convertDateFormat(ele.updatedAt),
                     avgRating:avgRating,
                     previewImage:previewImageUrl
             }
         })
     }
     return res.json(body);
-
 });
 
 //get-details-of-a-spot-by-id -> /api/spots/:spotId
@@ -317,23 +307,20 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
             name: spot.name,
             description: spot.description,
             price: spot.price,
-            createdAt: spot.createdAt,
-            updatedAt: spot.updatedAt,
+            createdAt: convertDateFormat(spot.createdAt),
+            updatedAt: convertDateFormat(spot.updatedAt),
             numReviews: numReviews,
             avgRating: avgRating,
             SpotImages: spot.SpotImages,
             Owner: spot.Owner
         };
-
         return res.status(200).json(response);
-
     })
 
     //edit-a-spot
     router.put('/:spotId', requireAuth, validateCreateSpot, checkSpot, properAuthSpot, async(req,res,next)=>{
         const {address, city, state, country, lat, lng, name, description, price} = req.body;
         const spotId = req.params.spotId;
-
         const spot = await Spot.findByPk(spotId);
         spot.address = address;
         spot.city = city;
@@ -359,10 +346,9 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
             name: spot.name,
             description: spot.description,
             price: spot.price,
-            createdAt: spot.createdAt,
-            updatedAt: spot.updatedAt
+            createdAt: convertDateFormat(spot.createdAt),
+            updatedAt: convertDateFormat(spot.updatedAt)
         });
-
     })
 
     //create-a-review-for-a-spot => post -->/api/spots/:spotId/reviews
@@ -402,12 +388,11 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
             spotId: newReview.spotId,
             review: newReview.review,
             stars: newReview.stars,
-            createdAt: newReview.createdAt,
-            updatedAt: newReview.updatedAt
+            createdAt: convertDateFormat(newReview.createdAt),
+            updatedAt: convertDateFormat(newReview.updatedAt)
         });
 
     })
-
 
     //get-reviews-by-spot-id => get -> /api/spots/:spotId/reviews
     router.get('/:spotId/reviews', checkSpot,async(req, res, next) => {
@@ -425,7 +410,6 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
                 }
             ]
         })
-
         const body = {
             Reviews:reviews.map(ele => {
                 return{
@@ -434,15 +418,14 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
                     spotId:parseInt(req.params.spotId, 10),
                     review: ele.review,
                         stars: ele.stars,
-                        createdAt: ele.createdAt,
-                        updatedAt: ele.updatedAt,
+                        createdAt: convertDateFormat(ele.createdAt),
+                        updatedAt: convertDateFormat(ele.updatedAt),
                         User:{
                             id: ele.User.id,
                             firstName: ele.User.firstName,
                             lastName: ele.User.lastName
                         },
                         ReviewImages: ele.ReviewImages
-
                 }
             })
         }
@@ -462,8 +445,9 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
             }
             return true;
           }),
-    handleValidationErrors
+        handleValidationErrors
     ];
+
     //create-a-booking-based-on-a-spot-id => post -> /api/spots/:spotId/bookings
     router.post('/:spotId/bookings', requireAuth,checkSpot,checkAuthSpot_booking,  validatebooking, async(req,res,next) => {
         const { startDate: bodyStartDate, endDate: bodyEndDate } = req.body;
@@ -522,13 +506,11 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
             id: newBooking.id,
             spotId: newBooking.spotId,
             userId: newBooking.userId,
-            startDate: newBooking.startDate,
-            endDate: newBooking.endDate,
-            createdAt: newBooking.createdAt,
-            updatedAt: newBooking.updatedAt
+            startDate: convertDateFormat2(newBooking.startDate),
+            endDate: convertDateFormat2(newBooking.endDate),
+            createdAt: convertDateFormat(newBooking.createdAt),
+            updatedAt: convertDateFormat(newBooking.updatedAt)
           });
-
-
     })
 
     //get-all-bookings-for-a-spot-by-id => get => /api/spots/:spotId/bookings
@@ -554,10 +536,10 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
                     id:booking.id,
                     spotId:booking.spotId,
                     userId:booking.userId,
-                    startDate:booking.startDate,
-                    endDate:booking.endDate,
-                    createdAt:booking.createdAt,
-                    updatedAt:booking.updatedAt
+                    startDate:convertDateFormat2(booking.startDate),
+                    endDate:convertDateFormat2(booking.endDate),
+                    createdAt:convertDateFormat(booking.createdAt),
+                    updatedAt:convertDateFormat(booking.updatedAt)
                 }))
             })
         }else{
@@ -566,24 +548,17 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
                 attributes:['spotId','startDate','endDate']
             })
             return res.json({
-
                 Bookings:bookings.map(booking=>({
-
-
                     spotId:booking.spotId,
-
-                    startDate:booking.startDate,
-                    endDate:booking.endDate,
-
+                    startDate:convertDateFormat2(booking.startDate),
+                    endDate:convertDateFormat2(booking.endDate),
                 }))
             })
         }
-
     })
 
     //delete-a-spot => delete -> /api/spots/:spotId
     router.delete('/:spotId', requireAuth, checkSpot, properAuthSpot, async (req, res, next) => {
-
         await Review.destroy({
             where: { spotId: req.params.spotId }
         });
@@ -598,6 +573,4 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
             message: "Successfully deleted"
         });
     })
-
-
 module.exports = router;

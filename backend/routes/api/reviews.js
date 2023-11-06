@@ -2,7 +2,7 @@ const express = require('express');
 const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
 
-const { setTokenCookie, restoreUser,requireAuth } = require('../../utils/auth');
+const { setTokenCookie, restoreUser,requireAuth,convertDateFormat } = require('../../utils/auth');
 const { User,Spot,Booking,Review, ReviewImage, SpotImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -91,7 +91,6 @@ router.get('/current', requireAuth, async(req,res,next) => {
                         where:{preview:true},
                         require:false
                     },
-
             },
             {
                 model:ReviewImage,
@@ -110,8 +109,8 @@ router.get('/current', requireAuth, async(req,res,next) => {
                 spotId:ele.Spot.id,
                 review: ele.review,
                 stars: ele.stars,
-                createdAt: ele.createdAt,
-                updatedAt: ele.updatedAt,
+                createdAt: convertDateFormat(ele.createdAt),
+                updatedAt: convertDateFormat(ele.updatedAt),
                 User:{
                     id: ele.User.id,
                     firstName: ele.User.firstName,
@@ -155,8 +154,8 @@ router.put('/:reviewId', requireAuth,validateReview, checkReview, properAuthRevi
         spotId:editReview.spotId,
         review:editReview.review,
         stars:editReview.stars,
-        createdAt:editReview.createdAt,
-        updatedAt:editReview.updatedAt
+        createdAt:convertDateFormat(editReview.createdAt),
+        updatedAt:convertDateFormat(editReview.updatedAt)
     })
 })
 

@@ -62,13 +62,32 @@ const setTokenCookie = (res, user) => {
   // If there is no current user, return an error
 const requireAuth = function (req, _res, next) {
     if (req.user) return next();
-
-
     _res.status(401).json({
       message:'Authentication required'
     })
     return next(err);
   }
 
+  function convertDateFormat(value) {
+    const date = new Date(value);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
 
-  module.exports = { setTokenCookie, restoreUser, requireAuth };
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
+
+  function convertDateFormat2(value) {
+    const date = new Date(value);
+    const year = date.getUTCFullYear();
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+    const day = date.getUTCDate().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  }
+
+
+  module.exports = { setTokenCookie, restoreUser, requireAuth, convertDateFormat,convertDateFormat2 };
