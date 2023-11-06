@@ -1,6 +1,7 @@
 const express = require('express');
 const { Sequelize,fn, col,Op ,query} = require('sequelize');
 const bcrypt = require('bcryptjs');
+
 const { setTokenCookie, restoreUser,requireAuth,convertDateFormat,convertDateFormat2 } = require('../../utils/auth');
 const { User,Spot,Booking,Review, ReviewImage, SpotImage } = require('../../db/models');
 const { check } = require('express-validator');
@@ -128,7 +129,7 @@ router.get('/',async(req,res,next)=>{
                     createdAt:convertDateFormat(ele.createdAt),
                     updatedAt:convertDateFormat(ele.updatedAt),
                     avgRating:parseFloat(avgRating),
-                    previewImage:previewImageUrl
+                    previewImage:previewImageUrl || null
             }
         })
 
@@ -573,4 +574,5 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
             message: "Successfully deleted"
         });
     })
+
 module.exports = router;
