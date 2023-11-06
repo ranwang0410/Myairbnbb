@@ -51,7 +51,7 @@ router.get('/',async(req,res,next)=>{
 
     if(page < 1) errors.page = "Page must be greater than or equal to 1";
     if(size < 1 || size > 20) errors.size = "Size must be greater than or equal to 1";
-
+    const { minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
     const params = ['maxLat', 'minLat', 'minLng', 'maxLng', 'minPrice', 'maxPrice'];
     for(let i = 0; i < params.length; i++){
         const param = params[i];
@@ -85,13 +85,9 @@ router.get('/',async(req,res,next)=>{
     }
 
     let where = {};
-
-    if (req.query.minLat) where.lat = { [Op.gte]: parseFloat(req.query.minLat) };
-    if (req.query.maxLat) where.lat = { [Op.lte]: parseFloat(req.query.maxLat) };
-    if (req.query.minLng) where.lng = { [Op.gte]: parseFloat(req.query.minLng) };
-    if (req.query.maxLng) where.lng = { [Op.lte]: parseFloat(req.query.maxLng) };
-    if (req.query.minPrice) where.price = { [Op.gte]: parseFloat(req.query.minPrice) };
-    if (req.query.maxPrice) where.price = { [Op.lte]: parseFloat(req.query.maxPrice) };
+    if (minLat && maxLat) where.lat = { [Op.between]: [parseFloat(minLat), parseFloat(maxLat)] };
+    if (minLng && maxLng) where.lng = { [Op.between]: [parseFloat(minLng), parseFloat(maxLng)] };
+    if (minPrice && maxPrice) where.price = { [Op.between]: [parseFloat(minPrice), parseFloat(maxPrice)] };
 
     const spot = await Spot.findAll({
         where,

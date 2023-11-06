@@ -38,11 +38,11 @@ module.exports = {
         city:'city2',
         state:'state2',
         country:'country2',
-        lat:-20,
-        lng:20,
+        lat:38.5,
+        lng:40.5,
         name:'name2',
         description:'description2',
-        price:20
+        price:55
       },
       {
         ownerId:3,
@@ -50,11 +50,11 @@ module.exports = {
         city:'city3',
         state:'state3',
         country:'country3',
-        lat:-30,
-        lng:30,
+        lat:35,
+        lng:35,
         name:'name3',
         description:'description3',
-        price:30
+        price:80
       },
       {
         ownerId:4,
@@ -62,11 +62,11 @@ module.exports = {
         city:'city4',
         state:'state4',
         country:'country4',
-        lat:-40,
+        lat:40,
         lng:40,
         name:'name4',
         description:'description4',
-        price:40
+        price:90
       },
       {
         ownerId:5,
@@ -74,8 +74,8 @@ module.exports = {
         city:'city5',
         state:'state5',
         country:'country5',
-        lat:-50,
-        lng:50,
+        lat:33.3,
+        lng:39.8,
         name:'name5',
         description:'description5',
         price:50
