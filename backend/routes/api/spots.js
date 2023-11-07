@@ -98,11 +98,11 @@ router.get('/',async(req,res,next)=>{
                 model: SpotImage,
                 attributes: ['url'],
                 where: { preview: true },
-            required: false
+                required: false
             },
             {
-            model: Review,
-            attributes: ['stars']
+                model: Review,
+                attributes: ['stars']
             }
         ],
   });
