@@ -22,27 +22,27 @@ module.exports = {
     await SpotImage.bulkCreate([
       {
         "spotId": 1,
-        "url": "image url1",
+        "url": "https://a0.muscache.com/im/pictures/b09bfd48-d73a-4ea0-b319-1c07aefd615b.jpg?im_w=1440",
         "preview": true
     },
     {
       "spotId": 2,
-      "url": "image url2",
+      "url": "https://a0.muscache.com/im/pictures/miso/Hosting-38187802/original/f464b390-e363-41a4-889d-f28759f9e234.jpeg?im_w=1200",
       "preview": true
     },
     {
       "spotId": 3,
-      "url": "image url3",
+      "url": "https://a0.muscache.com/im/pictures/127308fe-a721-4c9c-8f46-4cd1e9d2c1b6.jpg?im_w=1200",
       "preview": true
     },
     {
       "spotId": 4,
-      "url": "image url4",
-      "preview": false
+      "url": "https://a0.muscache.com/im/pictures/167eb876-04a8-4e9c-b2b9-5992f2bcb58c.jpg?im_w=1200",
+      "preview": true
   },
   {
     "spotId": 5,
-    "url": "image url5",
+    "url": "https://a0.muscache.com/im/pictures/708e58ab-d1f2-4304-9d0a-73553a2147c8.jpg?im_w=1200",
     "preview": true
   }
     ],{validate:true})
@@ -58,7 +58,13 @@ module.exports = {
     options.tableName = 'SpotImages';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      url: { [Op.in]: ['image url1', 'image url2', 'image url3','image url4','image url5'] }
+      url: { [Op.in]: [
+      'https://a0.muscache.com/im/pictures/b09bfd48-d73a-4ea0-b319-1c07aefd615b.jpg?im_w=1440',
+      'https://a0.muscache.com/im/pictures/miso/Hosting-38187802/original/f464b390-e363-41a4-889d-f28759f9e234.jpeg?im_w=1200',
+      'https://a0.muscache.com/im/pictures/127308fe-a721-4c9c-8f46-4cd1e9d2c1b6.jpg?im_w=1200',
+      'https://a0.muscache.com/im/pictures/167eb876-04a8-4e9c-b2b9-5992f2bcb58c.jpg?im_w=1200',
+      'https://a0.muscache.com/im/pictures/708e58ab-d1f2-4304-9d0a-73553a2147c8.jpg?im_w=1200'
+    ]}
     }, {});
   }
 };
