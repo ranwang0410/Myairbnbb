@@ -12,7 +12,7 @@ function Navigation({ isLoaded }) {
     <ul>
 
       <li>
-        <NavLink exact to="/">Airbnb logo</NavLink>
+        <NavLink to="/">Airbnb logo</NavLink>
       </li>
 
       {isLoaded && (

@@ -1,0 +1,51 @@
+.spots-list{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    row-gap: 30px;
+    column-gap: 20px;
+    padding:30px;
+
+}
+
+@media (max-width: 800px) {
+    .spots-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 500px) {
+    .spots-list {
+      grid-template-columns: 1fr;
+    }
+  }
+.landing-spot-list img{
+    width:400px;
+    height: 400px;
+    border-radius: 10px;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.landing-spot-list{
+    cursor: pointer;
+
+}
+
+.flex{
+    display:flex;
+    justify-content: space-between;
+    padding-top:10px
+}
+
+.flex img{
+    width:15px;
+    height:15px
+}
+
+.rating{
+    display:flex;
+    justify-content: space-between;
+
+}
