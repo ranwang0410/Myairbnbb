@@ -47,14 +47,26 @@ export default function SpotDetails() {
 
                         <div className="rating">
                             <img src='https://img.ixintu.com/download/jpg/20200809/9db320ac045b6806eea07a883b5a1672_512_512.jpg!con' alt='star' />
-                            <p>{spotDetails.avgRating} · {spotDetails.numReviews} reviews</p>
+                            {/* <p>{spotDetails.avgRating} · {spotDetails.numReviews} reviews</p> */}
+                            {spotDetails.numReviews > 0 ? (
+                                <p>{spotDetails.avgRating} · {spotDetails.numReviews} reviews</p>
+                            ) : (
+                                <p>New</p>
+                            )}
                         </div>
                         <button onClick={() => alert('Feature coming soon')}>Reserve</button>
                     </div>
                 </div>
 
                 <div className="review">
-                        <Reviews reviews={reviews}/>
+                    <img src='https://img.ixintu.com/download/jpg/20200809/9db320ac045b6806eea07a883b5a1672_512_512.jpg!con' alt='star' />
+                    {spotDetails.numReviews > 0 ? (
+                        <p>{spotDetails.avgRating} · {spotDetails.numReviews} reviews</p>
+                    ) : (
+                        <p>New</p>
+                    )}
+                    <button>Post Your Review</button>
+                    <Reviews reviews={reviews} />
                 </div>
             </div>
         </>

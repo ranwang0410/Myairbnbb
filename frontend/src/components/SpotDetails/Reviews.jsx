@@ -1,5 +1,5 @@
 export default function Reviews({ reviews }) {
-    console.log('this is review=>>',reviews)
+
     return (
         <div>
             {reviews && reviews.length >0 ? (

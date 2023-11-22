@@ -12,3 +12,7 @@ ul{
     height:100px
 }
 
+.right-nav{
+    display:flex;
+    column-gap: 30px;
+}

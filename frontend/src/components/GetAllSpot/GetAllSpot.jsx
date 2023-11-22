@@ -6,11 +6,11 @@ import './GetAllSpot.css'
 export default function GetAllSpot(){
     const dispatch = useDispatch();
     const spots = useSelector(state=>state.getSpots);
-    console.log('Spots in component:', spots);
+
     useEffect(()=>{
         dispatch(getSpots())
     },[dispatch])
-    console.log('print->',spots);
+
     return (
         <>
             <div className="spots-list">
