@@ -1,0 +1,25 @@
+.image>img{
+    width: 400px;
+    height: 400px;
+}
+.rating img{
+    width:15px;
+    height:15px
+}
+.rating{
+    display: flex;
+    justify-content: space-between;
+}
+.booking{
+    border:solid;
+    padding-top:10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 150px;
+}
+.spotDetail-part2{
+    display: flex;
+    justify-content: space-between;
+}
+
