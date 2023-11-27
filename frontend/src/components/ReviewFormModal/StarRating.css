@@ -1,0 +1,11 @@
+.star {
+    font-size: 30px;
+    cursor: pointer;
+    color: white;
+    text-shadow: 0 0 1px black;
+  }
+
+  .star.filled {
+    color:black;
+
+  }

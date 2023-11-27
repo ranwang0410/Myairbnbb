@@ -7,7 +7,8 @@ import * as sessionActions from './store/session';
 import SpotDetails from './components/SpotDetails/SpotDetails';
 import GetAllSpot from './components/GetAllSpot/GetAllSpot';
 import Reviews from './components/SpotDetails/Reviews';
-import CreateSpotForm from './components/Navigation/CreateSpotForm'
+import CreateSpotForm from './components/Navigation/CreateSpotForm';
+
 function Layout() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -30,11 +31,6 @@ const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
-      // {
-      //   path: '/',
-      //   element: <h1>Welcome!</h1>
-      // },
-
       {
         path:'/',
         element:<GetAllSpot/>
@@ -51,7 +47,7 @@ const router = createBrowserRouter([
       {
         path:'/create-spot',
         element:<CreateSpotForm/>
-      }
+      },
     ]
   }
 ]);
