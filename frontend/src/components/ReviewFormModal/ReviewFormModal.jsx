@@ -63,8 +63,7 @@ export default function ReviewFormModal({ spotId,onReviewSubmit }) {
                 <button className="submit-review-button"
                     type="submit"
                     disabled={comment.length < 10 || rating === 0}
-                >
-                    Submit Your Review
+                >Submit Your Review
                 </button>
             </form>
         </>
