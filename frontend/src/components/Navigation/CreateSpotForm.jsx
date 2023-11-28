@@ -117,7 +117,7 @@ export default function SpotForm({ mode }) {
                 result = await dispatch(updateUserSpot(spotId, formData));
 
             }
-            console.log("Result from dispatch:", result);
+            // console.log("Result from dispatch:", result);
             if (result && result.id) {
 
                 navigate(`/spots/${result.id}`);
