@@ -1,4 +1,32 @@
 h1{
     font-weight: bold;
-    color:skyblue
+    text-align: center;
+}
+form{
+    display:flex;
+    flex-direction: column;
+    padding:20px 20px;
+    width:300px;
+
+text-align: center;
+}
+
+label{
+
+
+  text-align: center;
+}
+button{
+
+    display: block;
+    border: 3px solid black;
+    width: 150px;
+
+    text-align: center;
+    margin: 0 auto;
+
+    background-color: #FF5A5F;
+    color:white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
 }

@@ -1,0 +1,60 @@
+div,span {
+  font-size: 13pt;
+  font-weight: normal;
+  color:black;
+  font-family:system-ui;
+  row-gap: 5px;
+}
+
+.spots-list{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin: 40px;
+}
+
+@media (max-width: 800px) {
+    .spots-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 500px) {
+    .spots-list {
+      grid-template-columns: 1fr;
+    }
+  }
+.landing-spot-list img{
+    width:350px;
+    height: 280px;
+    border-radius: 5px;
+    column-gap: 5px;
+    padding: 10px;
+
+}
+
+
+
+.landing-spot-list{
+    cursor: pointer;
+
+}
+
+.flex{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.city-state {
+  flex-grow: 1;
+}
+
+.rating{
+    display:flex;
+    align-items: center;
+
+}
+.bold {
+  font-weight: bold;
+
+}

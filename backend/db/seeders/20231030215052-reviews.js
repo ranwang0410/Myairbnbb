@@ -23,31 +23,31 @@ module.exports = {
       {
         "userId": 1,
         "spotId": 1,
-        "review": "This is first review!",
+        "review": "We had a fantastic stay for a week. This is the best place to stay with a beautiful view of a very safe area.",
         "stars": 1,
       },
       {
         "userId": 2,
         "spotId": 2,
-        "review": "This is second review!",
+        "review": "Wonderful villa. Beautiful view, wonderful amenities. Secluded but less than 10 min from groceries, shops. Very responsive host. We will come back.",
         "stars": 2,
       },
       {
         "userId": 3,
         "spotId": 3,
-        "review": "This is third review!",
+        "review": "Very charming house with a beautiful and large patio. The patio is surrounded by many trees, it feels like a tree house.",
         "stars": 3,
       },
       {
         "userId": 4,
         "spotId": 4,
-        "review": "This is fourth review!",
+        "review": "Sandra and Mike were great hosts. the air bnb was beautiful, just like the photos. great location and privacy. the sit bnb was also fully equipped with beach towels games books and beach equipment. great place to stay for a beach getaway. highly recommend the host and location.",
         "stars": 4,
       },
       {
         "userId": 5,
         "spotId": 5,
-        "review": "This is fifth review!",
+        "review": "This is an incredible stay. You will not regret staying here. The views are incredible and the home itself is spectacular. We fit 6 adults very comfortably in this home. We cannot wait to be back!",
         "stars": 5,
       }
     ],{ validate: true })

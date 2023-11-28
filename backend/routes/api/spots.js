@@ -565,7 +565,8 @@ router.get('/:spotId', checkSpot, async(req, res, next) => {
         await SpotImage.destroy({
             where: { spotId: req.params.spotId}
         })
-        await req.spot.destroy();
+        // await req.spot.destroy();
+        await Spot.destroy({ where: { id: req.params.spotId } });
         return res.status(200).json({
             message: "Successfully deleted"
         });

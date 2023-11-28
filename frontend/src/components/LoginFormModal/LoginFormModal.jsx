@@ -28,20 +28,22 @@ function LoginFormModal() {
     <>
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
-        <label>
-          Username or Email
+        <label style={{ fontSize: '20px' }}>
+
           <input
             type="text"
+            placeholder='Username or Email'
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             required
           />
         </label>
-        <label>
-          Password
+        <label style={{ fontSize: '20px' }}>
+
           <input
             type="password"
             value={password}
+            placeholder='password'
             onChange={(e) => setPassword(e.target.value)}
             required
           />
