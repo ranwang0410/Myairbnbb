@@ -21,6 +21,7 @@ module.exports = {
           model:'Spots',
           key:'id'
         }
+
       },
       userId: {
         type: Sequelize.INTEGER,

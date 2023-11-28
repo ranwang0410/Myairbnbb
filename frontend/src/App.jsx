@@ -8,7 +8,9 @@ import SpotDetails from './components/SpotDetails/SpotDetails';
 import GetAllSpot from './components/GetAllSpot/GetAllSpot';
 import Reviews from './components/SpotDetails/Reviews';
 import CreateSpotForm from './components/Navigation/CreateSpotForm';
-
+import ManageSpots from './components/Navigation/ManageSpots'
+import DeleteSpotModal from './components/DeleteSpotModal/DeleteSpotModal';
+import DeleteReviewModal from './components/DeleteReviewModal/DeleteReviewModal'
 function Layout() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -46,8 +48,25 @@ const router = createBrowserRouter([
       },
       {
         path:'/create-spot',
-        element:<CreateSpotForm/>
+        element:<CreateSpotForm mode="create"/>
       },
+      {
+        path:'/manage-spots',
+        element:<ManageSpots/>
+      },
+      {
+        path:'/update-spot/:spotId',
+        element:<CreateSpotForm mode="update"/>
+      },
+      {
+        path:'/delete-spot',
+        element:<DeleteSpotModal/>
+      },
+      {
+        path:'/delete-review',
+        element:<DeleteReviewModal/>
+      }
+
     ]
   }
 ]);

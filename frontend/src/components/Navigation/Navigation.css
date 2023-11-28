@@ -2,9 +2,9 @@ ul{
     display:flex;
     justify-content: space-between;
     padding-top:20px;
-    padding-bottom: 20px;
     padding-left: 50px;
     padding-right: 50px;
+    border-bottom: 2px solid #CCCCCC;
 }
 
 .logo>img{

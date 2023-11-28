@@ -8,24 +8,24 @@ function Navigation({ isLoaded }) {
 
   return (
     <ul>
-        <li>
+        <div>
         <NavLink to="/">
           <div className='logo'>
           <img src='https://media.designrush.com/inspiration_images/135187/conversions/_1511452487_364_Airbnb-mobile.jpg' alt='airbnb logo'/>
           </div>
           </NavLink>
-      </li>
+      </div>
       <div className='right-nav'>
       {sessionUser && (
-        <li>
+        <div>
           <NavLink to="/create-spot">Create a New Spot</NavLink>
-        </li>
+        </div>
       )}
 
       {isLoaded && (
-        <li>
+        <div>
           <ProfileButton user={sessionUser} />
-        </li>
+        </div>
       )}
     </div>
     </ul>

@@ -37,7 +37,7 @@ export default function ReviewFormModal({ spotId,onReviewSubmit }) {
 
             }else{
                 const data = await response.json();
-                console.log('data--->',data)
+
                 setErrors({ message: data.message || 'An unexpected error occurred.' });
             }
         } catch (error) {
