@@ -27,7 +27,7 @@ export default function ReviewFormModal({ spotId,onReviewSubmit }) {
         try {
             const reviewData = { review:comment,stars:rating, spotId:parseInt(spotId,10) };
             const response = await dispatch(postReview(reviewData));
-            // console.log("Response from postReview:", response);
+
             if (response.status >= 200 && response.status < 300) {
                 const newReviewData = await response.json();
                 onReviewSubmit(newReviewData);
