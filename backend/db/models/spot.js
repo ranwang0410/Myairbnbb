@@ -69,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
       validate:{
         min:-180,
         max:180,
-        validLat(value){
+        validLng(value){
           if(value < -180 || value > 180){
             throw new Error('The lng must be in -180 to 180.')
           }
