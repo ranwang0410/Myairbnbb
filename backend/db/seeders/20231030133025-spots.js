@@ -35,16 +35,6 @@ module.exports = {
       {
         ownerId:2,
         address:'street2',
-<<<<<<< HEAD
-        city:'city2',
-        state:'state2',
-        country:'country2',
-        lat:38.5,
-        lng:40.5,
-        name:'name2',
-        description:'description2',
-        price:55
-=======
         city:'Soquel',
         state:'California',
         country:'United States',
@@ -53,21 +43,11 @@ module.exports = {
         name:'5,700 sq. Luxury Villa, Oceanview, Infinity Pool',
         description:"Rustic Mediterranean style villa with modern influences. Meticulous attention to detail is apparent throughout this home, making it an exceptional choice for your holiday. The villa offers extraordinary indoor/outdoor spaces including a theater, chefs kitchen, incredible master bath, infinity pool/hot tub and sweeping views of Monterey Bay. Every detail has been thought of, from the furnishings and accessories to the materials selection.",
         price:1495
->>>>>>> dev
+
       },
       {
         ownerId:3,
         address:'street3',
-<<<<<<< HEAD
-        city:'city3',
-        state:'state3',
-        country:'country3',
-        lat:35,
-        lng:35,
-        name:'name3',
-        description:'description3',
-        price:80
-=======
         city:'Aptos',
         state:'California',
         country:'United States',
@@ -76,21 +56,10 @@ module.exports = {
         name:'Work Remote @Modern Beach Retreat-Free EV Charging',
         description:'This open and airy modern home is a 5 minute walk to Rio del Mar beach. Enjoy the clean design, large deck and indoor outdoor living. Numerous outdoor activities at your doorstep including golf, world class surf breaks, and renowned biking and hiking trails in the forest of Nisene Marks. Equipped with high speed internet, a projector and Sonos sound system. Our place comfortably hosts five and is good for couples, business travelers, solo, and families.',
         price:344
->>>>>>> dev
       },
       {
         ownerId:4,
         address:'street4',
-<<<<<<< HEAD
-        city:'city4',
-        state:'state4',
-        country:'country4',
-        lat:40,
-        lng:40,
-        name:'name4',
-        description:'description4',
-        price:90
-=======
         city:'Oxnard',
         state:'California',
         country:'United States',
@@ -99,21 +68,10 @@ module.exports = {
         name:'Ocean Front Modern Luxurious Beach Home-GAME ROOM',
         description:"Breathtaking Spectacular Ocean Front Views from our Brand New Modern Home centrally located in Oxnard. Bright and airy as well as newly furnished with luxurious furnishings and beddings. This is the perfect home for families and friend reunions. Our home is six bedrooms and five bathrooms. Kitchen has stainless steel appliances. Our home feels as if you're sitting on the sand from our sofa as you watch the waves and tranquility of the beach surrounding you making it the ultimate beach getaway",
         price:914
->>>>>>> dev
       },
       {
         ownerId:5,
         address:'street5',
-<<<<<<< HEAD
-        city:'city5',
-        state:'state5',
-        country:'country5',
-        lat:33.3,
-        lng:39.8,
-        name:'name5',
-        description:'description5',
-        price:50
-=======
         city:'Bodega Bay',
         state:'California',
         country:'United States',
@@ -122,7 +80,6 @@ module.exports = {
         name:'Ocean Front Paradise w Hot Tub&Fire Pit',
         description:"Welcome to Cliff House! Nestled on the stunning Northern CA coast, this home has unparalleled ocean views. Enjoy a 10 minute walk to Duncan's Cove or Wright's Beach. From the impressive waves and tide pools in the winter months to the warm ocean breezes in the summer sun, it's always a great time to visit.- Luxe bedding, fully equipped European size kitchen, hot tub & fire pit- Come to escape or do it all! Wine Country (45mins) Northwood Golf Course (20mins) Kayaking in Jenner (10mins)",
         price:650
->>>>>>> dev
       }
     ], { validate: true })
   },

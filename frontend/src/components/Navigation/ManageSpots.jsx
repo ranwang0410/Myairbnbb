@@ -9,9 +9,9 @@ export default function ManageSpotsPage() {
     const dispatch = useDispatch();
     const { setModalContent, closeModal } = useModal();
     const userId = useSelector(state => state.session.user.id)
-    // console.log('this is userId->',userId)
+
     const userSpots = useSelector(state => state.getSpots);
-    // console.log('this is useSpot=',userSpots)
+
 
     useEffect(() => {
         dispatch(fetchUserSpots())
@@ -22,7 +22,7 @@ export default function ManageSpotsPage() {
         return null
     }
     const handleSpotDelete = async (spotId) => {
-        // console.log("Deleting spot with ID:", spotId);
+
         await dispatch(deleteUserSpot(spotId));
         closeModal();
         dispatch(fetchUserSpots());

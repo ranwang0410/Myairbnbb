@@ -97,10 +97,6 @@ module.exports = {
     },
     {
       "spotId": 4,
-<<<<<<< HEAD
-      "url": "image url4",
-      "preview": true
-=======
       "url": "https://a0.muscache.com/im/pictures/167eb876-04a8-4e9c-b2b9-5992f2bcb58c.jpg?im_w=1200",
       "preview": true
   },
@@ -128,7 +124,6 @@ module.exports = {
     "spotId": 5,
     "url": "https://a0.muscache.com/im/pictures/708e58ab-d1f2-4304-9d0a-73553a2147c8.jpg?im_w=1200",
     "preview": true
->>>>>>> dev
   },
   {
     "spotId": 5,
