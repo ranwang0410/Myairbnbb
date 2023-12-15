@@ -7,3 +7,18 @@ form{
 label{
     padding: 10px;
 }
+.signup button{
+
+    display: block;
+    border: 3px solid black;
+    width: 150px;
+
+    text-align: center;
+    margin: 0 auto;
+
+    background-color: #FF5A5F;
+
+    color:white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}

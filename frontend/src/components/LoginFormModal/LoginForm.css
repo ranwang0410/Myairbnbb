@@ -16,7 +16,7 @@ label{
 
   text-align: center;
 }
-button{
+.login button{
 
     display: block;
     border: 3px solid black;
@@ -26,6 +26,7 @@ button{
     margin: 0 auto;
 
     background-color: #FF5A5F;
+
     color:white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     cursor: pointer;

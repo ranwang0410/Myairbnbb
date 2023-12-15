@@ -1,0 +1,25 @@
+
+.spot-tile-link img{
+    width:350px;
+    height: 280px;
+    border-radius: 5px;
+    column-gap: 5px;
+    padding: 10px;
+}
+.flex{
+    display:flex;
+    align-items: center;
+}
+.button-link{
+    text-decoration: none;
+    color:white;
+}
+
+.spot-actions button{
+    background-color: darkgray;
+    color:white;
+}
+button{
+    background-color: darkgray;
+}
+
