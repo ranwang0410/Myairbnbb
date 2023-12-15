@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
 
     },
     review: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(1000),
       allowNull:false,
       unique:true
     },
