@@ -111,33 +111,34 @@ export default function SpotDetails() {
 
                     <div className="booking">
                         <div className="flex">
-                        <p>${spotDetails.price} night</p>
-                        <div className="rating">
-                        <span className="fa fa-star checked"></span>
-                        {numReviews > 0 ? (
-                        <p>{averageRating.toFixed(1)} · {spotDetails.numReviews} reviews</p>
-                    ) : (
-                        <p>New</p>
-                    )}
-                        </div>
+                            <p>${spotDetails.price} night</p>
+                            <div className="rating">
+                                <span className="fa fa-star checked"></span>
+                                {numReviews > 0 ? (
+                                    <div>{averageRating.toFixed(1)}·
+                                        {numReviews} {numReviews === 1 ? "Review" : "Reviews"}</div>
+                                ) : (
+                                    <font size="5"><strong>New</strong></font>
+                                )}
+                            </div>
                         </div>
                         <button onClick={() => alert('Feature coming soon')}>Reserve</button>
                     </div>
                 </div>
 
                 <div className="review">
-                   <div className="titlereview">
-                    <span className="fa fa-star checked"></span>
-                    {numReviews > 0 ? (
-                        <font size="5"><strong>{averageRating.toFixed(2)}</strong> ·
+                    <div className="titlereview">
+                        <span className="fa fa-star checked"></span>
+                        {numReviews > 0 ? (
+                            <font size="5"><strong>{averageRating.toFixed(1)}</strong> ·
 
-                        <strong>{numReviews} {numReviews === 1 ? "Review" : "Reviews"}</strong></font>
-                    ) : (
-                        <font size="5"><strong>New</strong></font>
-                    )}
+                                <strong>{numReviews} {numReviews === 1 ? "Review" : "Reviews"}</strong></font>
+                        ) : (
+                            <font size="5"><strong>New</strong></font>
+                        )}
                     </div>
                     {isLoggedIn && !isOwner && (
-                        <button className ='post-review-button' onClick={openReviewForm}>Post Your Review</button>
+                        <button className='post-review-button' onClick={openReviewForm}>Post Your Review</button>
                     )}
                     <Reviews reviews={reviews} onDeleteReview={handleDeleteReview} />
                 </div>

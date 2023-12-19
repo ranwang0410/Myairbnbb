@@ -11,25 +11,40 @@ function LoginFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
+  const handleError = async (res) => {
+    if (res.status === 401) {
+      setErrors({ credential: 'The provided credentials were invalid' });
+    } else {
+      const data = await res.json();
+      if (data && data.errors) {
+        setErrors(data.errors);
+      }
+    }
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
     return dispatch(sessionActions.login({ credential, password }))
       .then(closeModal)
-      .catch(async (res) => {
-        const data = await res.json();
-        if (data && data.errors) {
-          setErrors(data.errors);
-        }
-      });
+      .catch(handleError)
+  };
+
+  const handleDemoLogin = (e) => {
+    e.preventDefault();
+    setErrors({});
+    return dispatch(sessionActions.login({ credential: 'FakeUser3', password: 'password4' }))
+      .then(closeModal)
+      .catch(handleError)
   };
 
   return (
     <>
       <h1>Log In</h1>
+      {errors.credential && (
+          <div className='errors'>{errors.credential}</div>
+        )}
       <form onSubmit={handleSubmit}>
-        <label style={{ fontSize: '20px' }}>
-
+        <label className='border'>
           <input
             type="text"
             placeholder='Username or Email'
@@ -38,8 +53,7 @@ function LoginFormModal() {
             required
           />
         </label>
-        <label style={{ fontSize: '20px' }}>
-
+        <label>
           <input
             type="password"
             value={password}
@@ -48,10 +62,11 @@ function LoginFormModal() {
             required
           />
         </label>
-        {errors.credential && (
-          <p>{errors.credential}</p>
-        )}
-        <div className='login'><button type="submit">Log In</button></div>
+
+        <div className='login'>
+          <button type="submit" disabled={credential.length < 4 || password.length < 6}>Log In</button>
+          <a href='#' onClick={handleDemoLogin} className='demolink'>Demo User</a>
+        </div>
       </form>
     </>
   );

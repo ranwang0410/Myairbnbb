@@ -1,10 +1,10 @@
 ul{
     display:flex;
     justify-content: space-between;
-    padding-top:20px;
+    /* padding-top:20px; */
     padding-left: 50px;
     padding-right: 50px;
-    border-bottom: 2px solid #CCCCCC;
+    /* border-bottom: 2px solid #CCCCCC; */
 }
 
 .logo>img{
@@ -14,5 +14,17 @@ ul{
 
 .right-nav{
     display:flex;
-    column-gap: 30px;
 }
+.create-new-spot-link{
+    text-decoration: none;
+    color:rgb(1, 53, 53);
+    font-size: 15px;
+}
+.button1{
+    margin-top: 30px;
+    width: 200px;
+    height: 30px;
+    background-color: white;
+    border:none
+}
+

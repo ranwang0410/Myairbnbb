@@ -1,6 +1,12 @@
 h1{
     font-weight: bold;
     text-align: center;
+
+}
+.errors{
+    color:red;
+    justify-content: center;
+    text-align: center;
 }
 form{
     display:flex;
@@ -12,22 +18,23 @@ text-align: center;
 }
 
 label{
-
-
   text-align: center;
 }
 .login button{
-
     display: block;
     border: 3px solid black;
     width: 150px;
-
     text-align: center;
     margin: 0 auto;
-
     background-color: #FF5A5F;
-
     color:white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     cursor: pointer;
+    margin-bottom:5px;
+}
+
+.demolink{
+    font-size: 15px;
+    color:darkblue;
+
 }

@@ -1,46 +1,57 @@
-.profile-button-container{
-  position: relative;
-}
 .profile-dropdown{
     display:flex;
-    flex-direction: column;
     position: absolute;
     padding: 10px;
     cursor: pointer;
-    right:60px;
-    margin-top:1px;
-    border: 2px solid;
-    width: 120px;
-    height: 35px;
-    border-color: black;
+    right:50px;
+    margin-top:4px;
+    /* border: 2px solid; */
+    /* border-color: black; */
 
 }
-
 .profile-dropdown.hidden {
     display: none;
   }
 
-  button {
-    margin-top: 20px;
+  .button{
+    margin-top: 30px;
     cursor: pointer;
-    border-radius:80px;
     font-size:20px;
-    color:black;
-    background-color:white;
+    border-radius:80px;
     width: 60px;
-    height: 25px;
-    padding-left: 25px;
-
-  }
-
-  span {
-    font-size: 12pt;
-    font-weight: normal;
+    height: 30px;
     color:black;
-    margin-left: 10px;
-    font-family:system-ui;
+    background-color:white
   }
 .log{
-  display: flex;
+  position: absolute;
+}
+.managelink{
+  text-decoration: none;
+  color:black
+}
+.logoutbutton{
+  text-decoration: none;
+  color:black
+}
+.userlogin>div{
+font-size:15px;
+}
+.userlogin>button{
+  font-size: 15px;
+  margin-top: 5px;
+  border-radius:80px;
+}
+.userlogin{
+  border:2px solid;
+
 }
 
+.log{
+  border:2px solid;
+  width: 120px;
+  height: 40px;
+  right:10px;
+  margin-top:4px;
+
+}
