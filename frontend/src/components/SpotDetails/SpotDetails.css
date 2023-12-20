@@ -9,8 +9,8 @@
 
 .large-image img{
 
-    width: 600px;
-    height: 400px;
+    width: 700px;
+    height: 500px;
     padding: 10px;
 }
 
@@ -21,8 +21,8 @@
 }
 .small-image img{
 
-    width:300px;
-    height: 200px;
+    width:400px;
+    height: 250px;
 
 }
 
@@ -31,13 +31,9 @@
 .booking{
     border:5px solid;
    width:30%;
-    padding-top:10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding:10px;
     margin: 0px 20px;
     align-items: center;
-
 
 }
 
@@ -51,6 +47,7 @@
     display: block;
     border: 3px solid black;
     width: 300px;
+    height:40px;
     text-align: center;
     margin: 0 auto;
     line-height: 1;
@@ -84,4 +81,7 @@
   cursor: pointer;
 
 
+}
+.flex{
+    display: flex;
 }

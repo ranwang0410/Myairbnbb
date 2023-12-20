@@ -112,6 +112,7 @@ export default function SpotDetails() {
                     <div className="booking">
                         <div className="flex">
                             <p>${spotDetails.price} night</p>
+                            <p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p><p> </p> <p> </p><p> </p><p> </p><p> </p><p> </p><p> </p>
                             <div className="rating">
                                 <span className="fa fa-star checked"></span>
                                 {numReviews > 0 ? (
