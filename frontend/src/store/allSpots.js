@@ -5,6 +5,7 @@ const CREATE_SPOT = 'spots/CREATE_SPOT';
 const GET_USER_SPOTS = 'spots/GET_USER_SPOTS';
 const UPDATE_SPOT = 'spots/UPDATE_SPOT';
 const DELETE_SPOT = 'spots/DELETE_SPOT';
+const ADD_IMAGE_TO_SPOT = 'spots/ADD_IMAGE_TO_SPOT';
 
 export const getSpots = () => async (dispatch) => {
     const response = await csrfFetch('/api/spots')
@@ -21,13 +22,14 @@ export const getSpots = () => async (dispatch) => {
 export const createSpot = (spotData) => async (dispatch) => {
     const response = await csrfFetch('/api/spots', {
         method: 'POST',
-        Headers: {
+        headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(spotData)
     })
 
     const newSpot = await response.json();
+    // console.log("New spot data:", newSpot);
     dispatch({
         type: CREATE_SPOT,
         spot: newSpot
@@ -37,6 +39,25 @@ export const createSpot = (spotData) => async (dispatch) => {
     return newSpot
 }
 
+export const uploadImageToSpot = (spotId, imageData) => async (dispatch) => {
+    const response = await csrfFetch(`/api/spots/${spotId}/images`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(imageData)
+    });
+    if (response.ok) {
+        const image = await response.json();
+        dispatch({
+            type:'ADD_IMAGE_TO_SPOT',
+            spotId,
+            image
+        })
+        return image
+    }
+
+}
 export const fetchUserSpots = () => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/current`);
     const data = await response.json();
@@ -82,6 +103,14 @@ export const spotReducer = (state = {}, action) => {
             return {
                 ...state, [action.spot.id]: action.spot
             }
+        case ADD_IMAGE_TO_SPOT:
+            return {
+                ...state,
+                [action.spotId]: {
+                    ...state[action.spotId],
+                    SpotImages: [...state[action.spotId].SpotImages, action.image]
+                }
+            };
         case GET_USER_SPOTS:
             return action.spots.reduce((spots, spot) => {
                 spots[spot.id] = spot;
@@ -89,6 +118,7 @@ export const spotReducer = (state = {}, action) => {
             }, {});
         case UPDATE_SPOT:
             return {
+
                 ...state, [action.spot.id]: action.spot
             };
         case DELETE_SPOT:

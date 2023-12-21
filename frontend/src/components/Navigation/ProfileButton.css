@@ -5,9 +5,6 @@
     cursor: pointer;
     right:50px;
     margin-top:4px;
-    /* border: 2px solid; */
-    /* border-color: black; */
-
 }
 .profile-dropdown.hidden {
     display: none;
@@ -44,7 +41,7 @@ font-size:15px;
 }
 .userlogin{
   border:2px solid;
-
+  text-align: center;
 }
 
 .log{
@@ -52,6 +49,18 @@ font-size:15px;
   width: 120px;
   height: 40px;
   right:10px;
-  margin-top:4px;
-
+}
+.logoutbutton{
+  text-align: center;
+  color: white;
+}
+.logoutbutton button{
+  border-radius:80px;
+  height:25px;
+}
+.line{
+  height: 2px;
+  background-color: black;
+  width: 100%;
+  margin: 2px 0px;
 }

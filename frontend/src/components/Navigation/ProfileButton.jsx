@@ -54,8 +54,10 @@ function ProfileButton({ user }) {
             <div className='userlogin'>
               <div>Hello, {user.username}</div>
               <div>{user.email}</div>
+              <div className='line'></div>
               <div><NavLink to="manage-spots" className='managelink'>Manage Spots</NavLink></div>
-              <button onClick={logout} ><NavLink to ='/' className='logoutbutton'>Log Out</NavLink></button>
+              <div className='line'></div>
+              <div className='logoutbutton'><button onClick={logout} ><NavLink to ='/' className='logoutbutton'>Log Out</NavLink></button></div>
             </div>
           ) : (
             <div className='log'>

@@ -3,13 +3,14 @@ import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import './LoginForm.css';
-
+// import { NavLink } from 'react-router-dom';
 function LoginFormModal() {
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
+
 
   const handleError = async (res) => {
     if (res.status === 401) {
@@ -27,6 +28,7 @@ function LoginFormModal() {
     return dispatch(sessionActions.login({ credential, password }))
       .then(closeModal)
       .catch(handleError)
+
   };
 
   const handleDemoLogin = (e) => {

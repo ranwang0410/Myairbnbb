@@ -6,7 +6,9 @@ ul{
     padding-right: 50px;
     /* border-bottom: 2px solid #CCCCCC; */
 }
-
+.line2{
+    border-bottom: 2px solid #CCCCCC;
+}
 .logo>img{
     width: 200px;
     height:100px
