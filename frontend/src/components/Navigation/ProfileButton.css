@@ -53,10 +53,12 @@ font-size:15px;
 .logoutbutton{
   text-align: center;
   color: white;
+
 }
 .logoutbutton button{
   border-radius:80px;
   height:25px;
+  background-color: darkgray;
 }
 .line{
   height: 2px;

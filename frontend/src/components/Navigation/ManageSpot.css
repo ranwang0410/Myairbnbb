@@ -1,14 +1,9 @@
 
-.spot-tile-link img{
-    width:350px;
-    height: 280px;
-    border-radius: 5px;
-    column-gap: 5px;
-    padding: 10px;
-}
 .flex{
     display:flex;
-    align-items: center;
+    /* align-items: center */
+    justify-content: space-between;
+    margin:7px
 }
 .button-link{
     text-decoration: none;
@@ -17,9 +12,47 @@
 
 .spot-actions button{
     background-color: darkgray;
+    box-shadow: 2px 2px 2px black;
+    margin-right: 10px;
+    margin-top: 10px;
     color:white;
 }
-button{
+.manage,.create-button{
+    margin-left:50px
+}
+.create-button{
     background-color: darkgray;
+    box-shadow: 2px 2px 2px black
+
 }
 
+@media (min-width: 800px) {
+.manage-spot{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin:40px
+}
+}
+@media (max-width: 800px) {
+    .manage-spot{
+        grid-template-columns: repeat(2, 1fr)
+    }
+}
+@media (max-width: 500px) {
+    .manage-spot {
+      grid-template-columns: 1fr;
+    }
+  }
+.spot-tile img{
+        width:350px;
+        height: 280px;
+        border-radius: 5px;
+        column-gap: 5px;
+        padding: 10px;
+}
+.price{
+    margin: 7px;
+}
+.spot-tile{
+    margin-bottom:20px
+}

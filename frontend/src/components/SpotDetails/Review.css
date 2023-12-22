@@ -1,0 +1,26 @@
+.delete-review-button button{
+    color:white;
+    background-color: darkgray;
+    box-shadow: 2px 2px 2px black;
+    border: 2px solid black;
+    cursor: pointer;
+    width: 150px;
+    height: auto;
+    padding: 5px 20px;
+}
+.reviews-container{
+    padding:0px 30px;
+    width: 100%;
+}
+.review-item{
+    margin: 10px;
+}
+.review-name{
+    margin:10px 0px
+}
+.this-is-review{
+    margin:10px 0px
+}
+.no-review{
+    margin:10px 0px
+}

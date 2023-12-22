@@ -25,17 +25,16 @@ export default function SpotList({ spot }) {
         <div className="landing-spot-list" onClick={handleClick} title={spot.name}>
             <img src={spot.previewImage ? spot.previewImage : null} alt={spot.name} />
             <div className="description">
-                <div className="flex">
+                <div className="flex-city">
                     <span className="city-state">{spot.city}, {spot.state}</span>
                     <span className="rating">
                         <span className="fa fa-star checked"></span>
                         {newRating()}
                     </span>
-
                 </div>
 
-                <div>
-                    <span className="bold">$</span><span className="bold">{spot.price}</span> night
+                <div className="price-night">
+                    <span className="dollarsign">$</span><span className="bold">{spot.price}</span> night
                 </div>
             </div>
         </div>

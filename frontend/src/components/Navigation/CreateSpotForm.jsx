@@ -43,7 +43,7 @@ export default function SpotForm({ mode }) {
                         description: spotToUpdate.description || '',
                         price: spotToUpdate.price || '',
                         previewImage: spotToUpdate.previewImage || '',
-                        url: spotToUpdate.urls || []
+                        urls: spotToUpdate.urls || []
                     });
                 }
             })();
@@ -84,7 +84,7 @@ export default function SpotForm({ mode }) {
             newErrors.previewImage = 'Preview image URL needs to end in .png, .jpg, or .jpeg';
         }
 
-        formData.url.forEach((urls, index) => {
+        formData.urls.forEach((urls, index) => {
             if (!allowedFileTypes.includes(urls.split('.').pop().toLowerCase())) {
                 newErrors[`url${index}`] = 'Image URL needs to end in .png, .jpg, or .jpeg';
             }
@@ -211,8 +211,11 @@ export default function SpotForm({ mode }) {
                     </div>
                     <div className="error"><ErrorMsg field="price" /></div>
                 </section>
-                <div className="line1"></div>
+
+               {mode === 'create' &&
+                (
                 <section className="part">
+                    <div className="line1"></div>
                     <h2>Liven up your spot with photos</h2>
                     <p>Submit a link to at least one photo to publish your spot.</p>
                     <div className="url">
@@ -228,8 +231,10 @@ export default function SpotForm({ mode }) {
                         <input type="text" name="urls" placeholder="Image URL" value={formData.urls} onChange={handleChange} />
 
                     </div>
+                    <div className="line1"></div>
                 </section>
-                <div className="line1"></div>
+                )}
+
                 <div className="creat-spot-button1">
                     <button>{isUpdateMode ? "Update Your Spot" : "Create Spot"}</button>
                 </div>

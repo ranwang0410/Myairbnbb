@@ -10,7 +10,7 @@ export default function ManageSpotsPage() {
     const { setModalContent, closeModal } = useModal();
     const userId = useSelector(state => state.session.user.id)
     const userSpots = useSelector(state => state.getSpots);
-// console.log(userSpots,'userspots')
+    // console.log(userSpots,'userspots')
     useEffect(() => {
         dispatch(fetchUserSpots())
     }, [dispatch, userId]);
@@ -40,26 +40,31 @@ export default function ManageSpotsPage() {
 
     return (
         <div>
-            <h1>Manage Your Spots</h1>
-            {userId && <button><NavLink to="/create-spot" className='button-link'>Create a New Spot</NavLink></button>}
-            {userId && Object.values(userSpots).length > 0 &&
-                (
-                    Object.values(userSpots).map(spot => (
-                        <div key={spot.id} className="spot-tile">
-                            <Link to={`/spots/${spot.id}`} key={spot.id} className="spot-tile-link">
-                                <img src={spot.previewImage} alt={spot.name} />
-                                <div className='flex'>
-                                    <span>{spot.city}, {spot.state}</span>
-                                    <span>{spot.avgRating}</span>
+            <h1 className='manage'>Manage Your Spots</h1>
+            {userId && <button className='create-button'><NavLink to="/create-spot" className='button-link'>Create a New Spot</NavLink></button>}
+            <div className='manage-spot'>
+                {userId && Object.values(userSpots).length > 0 &&
+                    (
+                        Object.values(userSpots).map(spot => (
+                            <div key={spot.id} className="spot-tile">
+                                <Link to={`/spots/${spot.id}`} key={spot.id} className="spot-tile-link">
+                                    <img src={spot.previewImage} alt={spot.name} />
+                                    <div className='flex'>
+                                        <span>{spot.city}, {spot.state}</span>
+                                        <div>
+                                        <span className="fa fa-star checked"></span>
+                                        <span>{spot.avgRating ? spot.avgRating : 'New'}</span>
+                                        </div>
+                                    </div>
+                                    <div className='price'><span className="bold">$</span><span className="bold">{spot.price}</span> night</div>
+                                </Link>
+                                <div className="spot-actions">
+                                    <button><NavLink to={`/update-spot/${spot.id}`} className='button-link'>Update</NavLink></button>
+                                    <button onClick={() => openDeleteModal(spot.id)}>Delete</button>
                                 </div>
-                                <div><span className="bold">$</span><span className="bold">{spot.price}</span> night</div>
-                            </Link>
-                            <div className="spot-actions">
-                                <button><NavLink to={`/update-spot/${spot.id}`} className='button-link'>Update</NavLink></button>
-                                <button onClick={() => openDeleteModal(spot.id)}>Delete</button>
                             </div>
-                        </div>
-                    )))}
+                        )))}
+            </div>
         </div>
     )
 }

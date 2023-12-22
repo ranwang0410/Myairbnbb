@@ -62,9 +62,10 @@ export default function reviewsReducer(state={}, action){
                 [action.review.spotId]: [action.review, ...(state[action.review.spotId] || [])]
             }
         case DELETE_REVIEW:
-            return {
-                ...state,
-                [action.reviewId]:null
+            {
+                const newState = {...state};
+                delete newState[action.reviewId]
+                return newState
             }
         default:
             return state
