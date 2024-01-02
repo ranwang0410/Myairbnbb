@@ -23,19 +23,16 @@ export default function ReviewFormModal({ spotId, onReviewSubmit }) {
         try {
         const reviewData = { review: comment, stars: rating, spotId: parseInt(spotId, 10) };
         const response = await dispatch(postReview(reviewData));
-        // console.log(response, 'response')
-        if (response.status >= 200 && response.status < 300) {
-            const newReviewData = await response.json();
-            onReviewSubmit(newReviewData);
+
+        if (!response.error){
+            onReviewSubmit(response);
             closeModal()
             setRating(0);
             setComment('');
         } else if(response.status === 500) {
             const errorResponse = await response.json();
-            // console.log(errorResponse.message, 'message')
             throw new Error({message:errorResponse.message || 'User already has a review for this spot'});
         }}catch(error){
-            // console.log(error,'=>error')
             setErrors({ message: 'User already has a review for this spot'});
         }
 

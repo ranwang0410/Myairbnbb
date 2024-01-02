@@ -96,8 +96,6 @@ export default function SpotForm({ mode }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Submitting formData:", formData);
-
         const isValid = validate();
         if (!isValid) return;
         try {

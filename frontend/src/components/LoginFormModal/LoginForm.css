@@ -1,6 +1,11 @@
-h1{
+.log-title{
+    font-size: 34px;
+    color: black;
     text-align: center;
-
+    font-family:serif;
+}
+.login-modal{
+    padding:10px
 }
 .errors{
     color:red;
@@ -10,40 +15,43 @@ h1{
 form{
     display:flex;
     flex-direction: column;
-    padding:10px 10px;
     width:300px;
     text-align: center;
 }
 
 label{
   text-align: center;
+  padding:5px
 }
 .login button{
     display: block;
-    border: 3px solid black;
+    border: 2px solid black;
     width: 80%;
-    height: 30px;
+    height: 40px;
     text-align: center;
     margin: 0 auto;
     background-color: #FF5A5F;
     color:white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 3px 3px black;
     cursor: pointer;
-    margin-bottom:5px;
+    font-size: 12px;
 }
-
+.login{
+    padding:10px 0px
+}
 .demolink{
     font-size: 15px;
-    color:darkblue;
+    color:rgb(21, 28, 9);
 
 }
 input[type="text"] {
     border: 2px solid black;
     width:80%;
-    height: auto;
+    height: 20px;
   }
   input[type="password"] {
     border: 2px solid black;
     width:80%;
-    height: auto;
+    height:20px;
   }
+

@@ -10,7 +10,6 @@ export default function ManageSpotsPage() {
     const { setModalContent, closeModal } = useModal();
     const userId = useSelector(state => state.session.user.id)
     const userSpots = useSelector(state => state.getSpots);
-    // console.log(userSpots,'userspots')
     useEffect(() => {
         dispatch(fetchUserSpots())
     }, [dispatch, userId]);
@@ -39,7 +38,7 @@ export default function ManageSpotsPage() {
     }
 
     return (
-        <div>
+        <div className='manage-spot-container'>
             <h1 className='manage'>Manage Your Spots</h1>
             {userId && <button className='create-button'><NavLink to="/create-spot" className='button-link'>Create a New Spot</NavLink></button>}
             <div className='manage-spot'>
@@ -60,7 +59,7 @@ export default function ManageSpotsPage() {
                                 </Link>
                                 <div className="spot-actions">
                                     <button><NavLink to={`/update-spot/${spot.id}`} className='button-link'>Update</NavLink></button>
-                                    <button onClick={() => openDeleteModal(spot.id)}>Delete</button>
+                                    <button className = 'deletespot-button' onClick={() => openDeleteModal(spot.id)}>Delete</button>
                                 </div>
                             </div>
                         )))}

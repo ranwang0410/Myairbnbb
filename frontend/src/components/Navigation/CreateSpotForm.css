@@ -2,10 +2,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
 }
 
 .form-container form {
     width: 40%;
+
 }
 
 h1 {
@@ -15,7 +17,6 @@ h1 {
 .part {
     text-align: left;
     width: 100%;
-    /* padding-bottom: 20px; */
     line-height: 25px;
 }
 
@@ -79,16 +80,23 @@ p {
     font-size: 15px;
 }
 .create-spot-button1{
-    text-align: center;
+
+text-align: center;
     font-size: 15px;
+
 }
 
 .creat-spot-button1 button {
+
     background-color: #FF5A5F;
     color: white;
-    margin:10px;
+    margin-top:10px;
+    margin-right: 100px;
     font-size: 16px;
     cursor: pointer;
     box-shadow: 2px 2px 2px black;
 
   }
+.flex1{
+    width: 95%;
+}

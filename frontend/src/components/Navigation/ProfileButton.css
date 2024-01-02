@@ -1,3 +1,4 @@
+
 .profile-dropdown{
     display:flex;
     position: absolute;
@@ -29,14 +30,16 @@
 }
 .logoutbutton{
   text-decoration: none;
-  color:black
+  margin-top: 5px;
+}
+.userlogin{
+  padding:8px
 }
 .userlogin>div{
-font-size:15px;
+font-size:13px;
 }
 .userlogin>button{
   font-size: 15px;
-  margin-top: 5px;
   border-radius:80px;
 }
 .userlogin{
@@ -57,8 +60,10 @@ font-size:15px;
 }
 .logoutbutton button{
   border-radius:80px;
+  width: 80%;
   height:25px;
   background-color: darkgray;
+  font-size: 12px;
 }
 .line{
   height: 2px;

@@ -29,7 +29,7 @@ export const createSpot = (spotData) => async (dispatch) => {
     })
 
     const newSpot = await response.json();
-    // console.log("New spot data:", newSpot);
+
     dispatch({
         type: CREATE_SPOT,
         spot: newSpot
@@ -118,7 +118,6 @@ export const spotReducer = (state = {}, action) => {
             }, {});
         case UPDATE_SPOT:
             return {
-
                 ...state, [action.spot.id]: action.spot
             };
         case DELETE_SPOT:

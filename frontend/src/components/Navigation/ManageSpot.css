@@ -1,7 +1,6 @@
 
 .flex{
     display:flex;
-    /* align-items: center */
     justify-content: space-between;
     margin:7px
 }
@@ -46,13 +45,16 @@
 .spot-tile img{
         width:350px;
         height: 280px;
-        border-radius: 5px;
         column-gap: 5px;
         padding: 10px;
+        border-radius: 40px;
 }
 .price{
     margin: 7px;
 }
 .spot-tile{
     margin-bottom:20px
+}
+.deletespot-button{
+    cursor: pointer;
 }

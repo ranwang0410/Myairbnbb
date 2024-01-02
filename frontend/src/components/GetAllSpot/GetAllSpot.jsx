@@ -12,7 +12,7 @@ export default function GetAllSpot(){
     },[dispatch])
 
     return (
-        <>
+        <div className="landing-page">
             <div className="spots-list">
                 {
                     Object.values(spots).map(spot => (
@@ -20,6 +20,6 @@ export default function GetAllSpot(){
                     ))
                 }
             </div>
-        </>
+        </div>
     )
 }

@@ -1,14 +1,11 @@
 import { useState } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
-// import { Navigate } from 'react-router-dom';
 import * as sessionActions from '../../store/session';
 import './SignupForm.css';
 
 function SignupFormPage() {
   const dispatch = useDispatch();
-  // const sessionUser = useSelector((state) => state.session.user);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -34,93 +31,102 @@ function SignupFormPage() {
         .then(closeModal)
         .catch(async (res) => {
           const data = await res.json();
-          console.log(data)
-          if (data?.errors) {
+
+          if (data && data.errors) {
             setErrors(data.errors);
           }
         });
+    } else {
+      return setErrors({
+        ...errors,
+        confirmPassword: "Confirm Password field must be the same as the Password field"
+      });
     }
-    return setErrors({
-      confirmPassword: "Confirm Password field must be the same as the Password field"
-    });
   };
 
   return (
-    <>
-      <h1>Sign Up</h1>
-      {errors.email && <p>{errors.email}</p>}
-      {errors.username && <p>{errors.username}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>
-          <input
-            type="text"
-            value={firstName}
-            placeholder='First Name'
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-          />
-        </label>
-        {errors.firstName && <p>{errors.firstName}</p>}
-        <label>
-          <input
-            type="text"
-            value={lastName}
-            placeholder='Last Name'
-            onChange={(e) => setLastName(e.target.value)}
-            required
-          />
-        </label>
-        {errors.lastName && <p>{errors.lastName}</p>}
-        <label>
-          <input
-            type="text"
-            value={email}
-            placeholder='Email'
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
+    <div className='logout-modal'>
+      <div className='log-title'>Sign Up</div>
+      <div className='errors'>
+        {Object.values(errors).map((error, idx) => (
+          <p key={idx}>{error}</p>
+        ))}
+      </div>
+      {/* <div className='errors'>{errors.email && <p>{errors.email}</p>}</div>
+      <div className='errors'>{errors.username && <p>{errors.username}</p>}</div> */}
+      <div className='content'>
+        <form onSubmit={handleSubmit}>
+          <label>
+            <input
+              type="text"
+              value={firstName}
+              placeholder='First Name'
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
+          </label>
+          {/* <div className='errors'>{errors.firstName && <p>{errors.firstName}</p>}</div> */}
+          <label>
+            <input
+              type="text"
+              value={lastName}
+              placeholder='Last Name'
+              onChange={(e) => setLastName(e.target.value)}
+              required
+            />
+          </label>
+          {/* <div className='errors'>{errors.lastName && <p>{errors.lastName}</p>}</div> */}
+          <label>
+            <input
+              type="text"
+              value={email}
+              placeholder='Email'
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </label>
 
-        <label>
-          <input
-            type="text"
-            value={username}
-            placeholder='UserName'
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </label>
+          <label>
+            <input
+              type="text"
+              value={username}
+              placeholder='UserName'
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </label>
 
-        <label>
-          <input
-            type="password"
-            value={password}
-            placeholder='Password'
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        {errors.password && <p>{errors.password}</p>}
-        <label>
-          <input
-            type="password"
-            value={confirmPassword}
-            placeholder='Confirm Password'
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-        </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <div className='signup'><button type="submit" disabled={
-          email.length < 1 ||
-          lastName.length < 1 ||
-          firstName.length <1 ||
-          username.length < 4 ||
-          password.length < 6 ||
-          confirmPassword.length < 6
-        }>Sign Up</button></div>
-      </form>
-    </>
+          <label>
+            <input
+              type="password"
+              value={password}
+              placeholder='Password'
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </label>
+          {/* <div className='errors'>{errors.password && <p>{errors.password}</p>}</div> */}
+          <label>
+            <input
+              type="password"
+              value={confirmPassword}
+              placeholder='Confirm Password'
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </label>
+          {/* <div className='errors'>{errors.confirmPassword && <p>{errors.confirmPassword}</p>}</div> */}
+          <div className='signup'><button type="submit" disabled={
+            email.length < 1 ||
+            lastName.length < 1 ||
+            firstName.length < 1 ||
+            username.length < 4 ||
+            password.length < 6 ||
+            confirmPassword.length < 6
+          }>Sign Up</button></div>
+        </form>
+      </div>
+    </div>
   );
 }
 

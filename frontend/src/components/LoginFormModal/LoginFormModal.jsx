@@ -3,7 +3,7 @@ import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import './LoginForm.css';
-// import { NavLink } from 'react-router-dom';
+
 function LoginFormModal() {
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
@@ -40,8 +40,8 @@ function LoginFormModal() {
   };
 
   return (
-    <>
-      <h1>Log In</h1>
+    <div className='login-modal'>
+      <div className='log-title'>Log In</div>
       {errors.credential && (
           <div className='errors'>{errors.credential}</div>
         )}
@@ -67,10 +67,11 @@ function LoginFormModal() {
 
         <div className='login'>
           <button type="submit" disabled={credential.length < 4 || password.length < 6}>Log In</button>
-          <a href='#' onClick={handleDemoLogin} className='demolink'>Demo User</a>
+
         </div>
+        <a href='#' onClick={handleDemoLogin} className='demolink'>Demo User</a>
       </form>
-    </>
+    </div>
   );
 }
 

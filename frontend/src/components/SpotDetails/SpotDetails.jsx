@@ -1,15 +1,12 @@
-
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from 'react-router-dom';
 import { getSpotDetail } from '../../store/spotDetails';
-import { getReviews, deleteReview, postReview } from "../../store/reviews";
+import { getReviews, postReview } from "../../store/reviews";
 import Reviews from './Reviews';
 import ReviewFormModal from "../ReviewFormModal/ReviewFormModal";
-import DeleteReviewModal from '../DeleteReviewModal/DeleteReviewModal';
 import { useModal } from '../../context/Modal';
 import './SpotDetails.css';
-
 
 export default function SpotDetails() {
     const { setModalContent, closeModal } = useModal();
@@ -21,17 +18,18 @@ export default function SpotDetails() {
     const isLoggedIn = Boolean(sessionUser);
     const isOwner = sessionUser && sessionUser.id === spotDetails?.Owner?.id;
     const [hasUserPostedReview, setHasUserPostedReview] = useState(false);
-    const [reviewToDelete, setReviewToDelete] = useState(null);
 
     useEffect(() => {
+
         dispatch(getSpotDetail(spotId));
-        dispatch(getReviews(spotId)).then(()=>{
-            if(reviews && sessionUser){
+
+        dispatch(getReviews(spotId)).then(() => {
+            if (reviews && sessionUser) {
                 const userReview = reviews.find(review => review.userId === sessionUser.id);
-                setHasUserPostedReview(Boolean(userReview))
+                setHasUserPostedReview(Boolean(userReview));
             }
         });
-    }, [dispatch, spotId, sessionUser, reviews]);
+    }, [dispatch, spotId]);
 
     const calculateAverageRating = () => {
         if (reviews && reviews.length > 0) {
@@ -51,32 +49,18 @@ export default function SpotDetails() {
     const averageRating = calculateAverageRating();
     const numReviews = calculateNumReviews();
 
-    const handleNewReview = (reviewData) => {
-        dispatch(postReview(reviewData))
-        closeModal()
-    };
-    const handleDeleteReview = (review) => {
-        setReviewToDelete(review);
-        openDeleteReviewModal();
+    const handleNewReview = async (reviewData) => {
+        await dispatch(postReview(reviewData));
+        setHasUserPostedReview(true)
+        closeModal();
+        dispatch(getReviews(spotId))
     };
 
-    const handleConfirmDelete = () => {
-        if (reviewToDelete) {
-            dispatch(deleteReview(reviewToDelete.id));
-            closeModal();
-            setReviewToDelete(null);
-        }
-    };
     const openReviewForm = () => {
-        setModalContent(<ReviewFormModal spotId={spotId} onReviewSubmit={handleNewReview} />);
-    };
-
-    const openDeleteReviewModal = () => {
         setModalContent(
-            <DeleteReviewModal
-                review={reviewToDelete}
-                onConfirm={handleConfirmDelete}
-                onCancel={closeModal}
+            <ReviewFormModal
+                spotId={spotId}
+                onReviewSubmit={handleNewReview}
             />
         );
     };
@@ -105,7 +89,6 @@ export default function SpotDetails() {
                     </div>
                 </div>
 
-
                 <div className="spotDetail-part2">
                     <div className="left">
                         <h2>Hosted by {spotDetails.Owner.firstName} {spotDetails.Owner.lastName}</h2>
@@ -117,9 +100,8 @@ export default function SpotDetails() {
                             <div><strong>${spotDetails.price}</strong> night</div>
                             <div className="rating">
                                 <span className="fa fa-star checked"></span>
-
                                 {numReviews > 0 ? (
-                                    <div>{averageRating.toFixed(1)} · {numReviews}  {numReviews === 1 ? "review" : "reviews"}</div>
+                                    <div>{averageRating.toFixed(1)} · {numReviews} {numReviews === 1 ? "review" : "reviews"}</div>
                                 ) : (
                                     <span>New</span>
                                 )}
@@ -128,34 +110,24 @@ export default function SpotDetails() {
                         <button onClick={() => alert('Feature coming soon')}>Reserve</button>
                     </div>
                 </div>
-
+                <div className='line-spot-detail'></div>
                 <div className="review">
                     <div className="titlereview">
-                        <span className="fa fa-star checked"></span>
+                        <span className="fa fa-star checked"></span><span>  </span>
                         {numReviews > 0 ? (
-                            <font size="5"><strong>{averageRating.toFixed(1)}</strong> · <strong>{numReviews} {numReviews === 1 ? "review" : "reviews"}</strong></font>
+                            <font size="5"><strong>{averageRating.toFixed(1)}</strong>  ·  <strong>{numReviews} {numReviews === 1 ? "review" : "reviews"}</strong></font>
                         ) : (
                             <font size="5"><strong>New</strong></font>
                         )}
                     </div>
                     {isLoggedIn && !isOwner && !hasUserPostedReview && (
                         <div className="post-review">
-                        <button className='post-review-button' onClick={openReviewForm}>Post Your Review</button>
+                            <button className='post-review-button' onClick={openReviewForm}>Post Your Review</button>
                         </div>
                     )}
-                    <Reviews reviews={reviews} onDeleteReview={handleDeleteReview} />
+                    <Reviews reviews={reviews} />
                 </div>
-
-                {reviewToDelete && (
-                    <DeleteReviewModal
-                        review={reviewToDelete}
-                        onConfirm={handleConfirmDelete}
-                        onCancel={() => setReviewToDelete(null)}
-                    />
-                )}
             </div>
         </>
-    )
+    );
 }
-
-
